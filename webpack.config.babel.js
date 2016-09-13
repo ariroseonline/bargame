@@ -9,7 +9,7 @@ let config = {
     './index.js'
   ],
   output: {
-    path: path.join(__dirname, 'build/scripts'),
+    path: path.join(__dirname, 'public/scripts'),
     publicPath: 'scripts/',
     filename: 'app.js'
   },
@@ -26,7 +26,10 @@ let config = {
     //     loader: 'eslint'
     //   }
     // ],
+
     loaders: [
+
+
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -46,7 +49,8 @@ let config = {
         test: /\.(jpg|png|ttf|eot|woff|woff2|svg)$/,
         exclude: /node_modules/,
         loader: 'url?limit=100000'
-      }
+      },
+
     ]
   },
   plugins: [

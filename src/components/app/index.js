@@ -12,11 +12,11 @@ class App extends Component {
   }
 
   componentWillMount() {
-      if(!localStorage.getItem('username')) {
-        browserHistory.push('/login')
-      } else {
-        return true;
-      }
+      // if(!localStorage.getItem('username')) {
+      //   browserHistory.push('/login')
+      // } else {
+      //   return true;
+      // }
   }
 
   handleLogout() {
@@ -26,9 +26,10 @@ class App extends Component {
   render() {
     return (
         <div>
-            <h1>{'Bargame'}</h1>
+          <div id="firebaseui-auth-container"></div>
+
+          <h1>{'Bargame'}</h1>
             <ul>
-                <li><Link to="/">{'Home'}</Link></li>
                 <li><Link to="/challenges">{'Challenges'}</Link></li>
                 <li><Link to="photos">{'Photos'}</Link></li>
               { this.state.loggedIn ?
