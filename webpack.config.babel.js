@@ -19,13 +19,13 @@ let config = {
     historyApiFallback: true
   },
   module: {
-    preLoaders: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'eslint'
-      }
-    ],
+    // preLoaders: [
+    //   {
+    //     test: /\.js$/,
+    //     exclude: /node_modules/,
+    //     loader: 'eslint'
+    //   }
+    // ],
     loaders: [
       {
         test: /\.js$/,
