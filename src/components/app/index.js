@@ -26,7 +26,6 @@ class App extends Component {
   render() {
     return (
         <div>
-          <div id="firebaseui-auth-container"></div>
 
           <h1>{'Bargame'}</h1>
             <ul>
