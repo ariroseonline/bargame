@@ -16,27 +16,45 @@ var config = {
 };
 firebase.initializeApp(config);
 
-let loginUser = (username) => {
-  alert('logging in ' + username)
-  localStorage.setItem('username', username);
-  browserHistory.push('/challenges');
+function requireAuth(nextState, replace) {
+  if(null === firebase.auth().currentUser) {
+    replace({
+      pathname: '/login',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
 }
 
-let logoutUser = () => {
-  alert('logging out')
-  localStorage.removeItem('username');
-  browserHistory.push('/login')
-}
-
-
-render((
+//Always be watching for sign in/out changes
+firebase.auth().onAuthStateChanged(function(user) {
+  //Wait to render app until Firebase figures out what it's doing
+  render((
     <Router history={browserHistory}>
-        <Route component={App} logoutUser={logoutUser} path="/">
-          <IndexRoute component={Challenges} />
-          <Route component={Challenges} path="/challenges" />
-          <Route component={Photos} path="/photos" />
-          <Route component={Login} loginUser={loginUser} path="/login" />
-        </Route>
+      <Route component={App} path="/" onEnter={requireAuth}>
+        <IndexRoute component={Challenges}  />
+        <Route component={Challenges} path="/challenges" />
+        <Route component={Photos} path="/photos" />
+      </Route>
+      <Route component={Login} path="/login" />
 
     </Router>
-), document.getElementById('app'))
+  ), document.getElementById('app'))
+
+  if (user) {
+
+    // User is signed in.
+
+    //first time, add user to database
+    firebase.database().ref('users/' + user.uid).set({
+      provider:  user.providerData[0].providerId,
+      name: user.providerData[0].displayName
+    });
+
+  } else {
+    // User is signed out.
+  }
+}, function(error) {
+  console.log(error);
+});
+
+

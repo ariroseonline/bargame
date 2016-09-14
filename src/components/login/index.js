@@ -15,7 +15,7 @@ class Login extends Component {
   componentDidMount() {
     // FirebaseUI config.
     var uiConfig = {
-      'signInSuccessUrl': '/challenges',
+      // 'signInSuccessUrl': '/',
       'signInOptions': [
         // Leave the lines as is for the providers you want to offer your users.
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -24,15 +24,31 @@ class Login extends Component {
         // firebase.auth.GithubAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID
       ],
+      // 'signInFlow': 'popup',
+
+      'callbacks': {
+        'signInSuccess': function(currentUser, credential, redirectUrl) {
+          browserHistory.push('/');
+          // Do something.
+          // Return type determines whether we continue the redirect automatically
+          // or whether we leave that to developer to handle.
+          return true;
+        }
+      }
       // Terms of service url.
-      'tosUrl': 'http://google.com',
+      // 'tosUrl': 'http://google.com',
     };
 
     // Initialize the FirebaseUI Widget using Firebase.
-        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        this.ui = new firebaseui.auth.AuthUI(firebase.auth());
     // The start method will wait until the DOM is loaded.
-        ui.start('#firebaseui-auth-container', uiConfig);
+        this.ui.start('#firebaseui-auth-container', uiConfig);
 
+
+  }
+
+  componentWillUnmount() {
+    // debugger
   }
 
   handleUsernameChange(e) {
@@ -62,10 +78,7 @@ class Login extends Component {
             The uploader will be kept anonymous in all pictures.
             I didn't have enough pictures from my party last year. It's my birthday!
           </p>
-          <form onSubmit={this.onSubmit.bind(this)}>
-            <input type="text" id="username" onChange={this.handleUsernameChange.bind(this)} placeholder="Username" />
-            <input type="submit" value={"Go!"} />
-          </form>
+
         </div>
     )
   }
