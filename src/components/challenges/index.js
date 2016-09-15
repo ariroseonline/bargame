@@ -1,19 +1,19 @@
-import React, { Component, PropTypes } from 'react'
-import { Link } from 'react-router'
+import React, {Component, PropTypes} from 'react'
+import {Link} from 'react-router'
 import style from './style.css'
 
-class Challenges extends Component {
+let Challenges = React.createClass({
+  propTypes: {
+    children: PropTypes.node
+  },
+
   render() {
     return (
-        <div>
-          <h1>Challenges</h1>
-        </div>
+      <div>
+        <h1>Challenges</h1>
+      </div>
     )
   }
-}
-
-Challenges.propTypes = {
-  children: PropTypes.node
-}
+});
 
 export default Challenges;

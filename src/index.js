@@ -33,22 +33,32 @@ firebase.auth().onAuthStateChanged(function(user) {
       <Route component={App} path="/" onEnter={requireAuth}>
         <IndexRoute component={Challenges}  />
         <Route component={Challenges} path="/challenges" />
-        <Route component={Photos} path="/photos" />
+        <Route component={Photos} user={user} path="/photos" />
       </Route>
       <Route component={Login} path="/login" />
 
     </Router>
-  ), document.getElementById('app'))
+  ), document.getElementById('app'));
 
   if (user) {
-
     // User is signed in.
+    //add user to database if not already there
+    var usersRef = firebase.database().ref('users');
+    usersRef.child(user.uid).once('value', function(snapshot) {
 
-    //first time, add user to database
-    firebase.database().ref('users/' + user.uid).set({
-      provider:  user.providerData[0].providerId,
-      name: user.providerData[0].displayName
+      if(snapshot.val() === null) {
+
+        usersRef.child(user.uid).set({
+          provider:  user.providerData[0].providerId,
+          name: user.providerData[0].displayName,
+          email: user.providerData[0].email,
+          level: 0
+        });
+      }
     });
+
+
+
 
   } else {
     // User is signed out.
