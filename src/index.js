@@ -17,73 +17,36 @@ var config = {
 };
 firebase.initializeApp(config);
 
-function requireAuth(nextState, replace) {
-  debugger
-  if(null === firebase.auth().currentUser) {
-    replace({
-      pathname: '/login',
-      state: { nextPathname: nextState.location.pathname }
-    })
+function requireAuth (nextState, replace) {
+  if (!firebase.auth().currentUser) {
+    let hasLocalStorageUser = false;
+    for (let key in localStorage) {
+      if (key.startsWith("firebase:authUser:")) {
+        hasLocalStorageUser = true;
+      }
+    }
+    if (!hasLocalStorageUser) {
+      console.log('Attempting to access a secure route. Please authenticate first.');
+      replace({
+        pathname: '/login',
+        state: { nextPathname: nextState.location.pathname }
+      });
+    }
   }
 }
 
 //Wait to render app until Firebase figures out what it's doing with user
 render((
   <Router history={browserHistory}>
-    <Route component={App} path="/" onEnter={requireAuth}>
+    <Route component={App} path="/">
       <IndexRoute component={Challenges}  />
-      <Route component={Challenges} path="/challenges" />
-      <Route component={Challenge}  path="/challenges/:challenge_id" />
-      <Route component={Photos} path="/photos" />
+      <Route component={Challenges} path="/challenges" onEnter={requireAuth} />
+      <Route component={Challenge}  path="/challenges/:challenge_id" onEnter={requireAuth} />
+      <Route component={Photos} path="/photos" onEnter={requireAuth}/>
+      <Route component={Login} path="/login" />
     </Route>
-
-    <Route component={Login} path="/login" />
-
   </Router>
 ), document.getElementById('app'));
 
-//Always be watching for sign in/out changes
-firebase.auth().onAuthStateChanged(function(user) {
-
-  if (user) {
-    // User is signed in.
-    var usersRef = firebase.database().ref('users');
-    usersRef.child(user.uid).once('value', function(snapshot) {
-      let user =  snapshot.val();
-
-      //add user to database if not already there
-      if(snapshot.val() === null) {
-        usersRef.child(user.uid).set({
-          provider:  user.providerData[0].providerId,
-          name: user.providerData[0].displayName,
-          email: user.providerData[0].email,
-          level: 0
-        });
-      }
-
-      // //Wait to render app until Firebase figures out what it's doing with user
-      // render((
-      //   <Router history={browserHistory}>
-      //     <Route component={App} path="/" onEnter={requireAuth}>
-      //       <IndexRoute component={Challenges}  />
-      //       <Route component={Challenges} user={user} path="/challenges" />
-      //       <Route component={Challenge} user={user} path="/challenges/:challenge_id" />
-      //       <Route component={Photos} user={user} path="/photos" />
-      //     </Route>
-      //     <Route component={Login} path="/login" />
-      //
-      //   </Router>
-      // ), document.getElementById('app'));
-    });
-
-
-  } else {
-    // User is signed out.
-  }
-
-
-}, function(error) {
-  console.log(error);
-});
 
 

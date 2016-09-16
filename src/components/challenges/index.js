@@ -2,13 +2,13 @@ import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router'
 import style from './style.css'
 import ReactFireMixin from 'reactfire'
+import getUser from '../../util/attachFirebaseAuthListener'
 
 let Challenges = React.createClass({
   mixins: [ReactFireMixin],
 
   propTypes: {
-    children: PropTypes.node,
-    route: PropTypes.object //really looking for a way to validate route.user
+    children: PropTypes.node
   },
 
   getInitialState() {
@@ -18,8 +18,8 @@ let Challenges = React.createClass({
   },
 
   componentDidMount() {
-    let ref = firebase.database().ref('challenges').orderByChild('level').equalTo(this.props.route.user.level + 1);
-    this.bindAsObject(ref, 'challenges');
+    // let ref = firebase.database().ref('challenges').orderByChild('level').equalTo(this.props.route.user.level + 1);
+    // this.bindAsObject(ref, 'challenges');
   },
 
   renderChallenges() {
@@ -40,7 +40,7 @@ let Challenges = React.createClass({
   render() {
     return (
       <div>
-        <h1>Challenges</h1>
+        <h1>Challenges {window.yo}</h1>
         { this.renderChallenges() }
       </div>
     )

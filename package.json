@@ -41,7 +41,8 @@
     "prebuild": "npm run clean",
     "build": "cross-env NODE_ENV=production webpack -p",
     "postbuild": "npm run copy",
-    "clean": "rimraf build",
-    "copy": "cp -r public/* build"
+    "clean": "rimraf build && mkdir build",
+    "copy": "cp -r public/* build",
+    "deploy": "firebase deploy"
   }
 }

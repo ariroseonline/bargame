@@ -2,6 +2,8 @@ import React, {Component, PropTypes} from 'react'
 import {Router, Link, browserHistory} from 'react-router'
 import style from './style.css'
 import ReactFireMixin from 'reactfire'
+import attachFirebaseAuthListener from '../../util/attachFirebaseAuthListener'
+import firebaseLogout from '../../util/firebaseLogout'
 
 let App = React.createClass({
   mixins: [ReactFireMixin],
@@ -9,11 +11,9 @@ let App = React.createClass({
   propTypes: {
     children: PropTypes.node
   },
-  logOut() {
-    firebase.auth().signOut().then(function () {
-      // window.location.reload either of these work
-      Router.replace(location);
-    });
+
+  componentDidMount() {
+    attachFirebaseAuthListener()
   },
 
   render() {
@@ -26,7 +26,7 @@ let App = React.createClass({
         <ul>
           <li><Link to="/challenges">{'Challenges'}</Link></li>
           <li><Link to="/photos">{'Photos'}</Link></li>
-          <li><a href="" onClick={this.logOut}>Log Out</a></li>
+          <li><a href="" onClick={firebaseLogout}>Log Out</a></li>
         </ul>
 
 
