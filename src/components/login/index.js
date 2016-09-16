@@ -10,26 +10,27 @@ let Login = React.createClass({
   componentDidMount() {
     // FirebaseUI config.
     var uiConfig = {
-      // 'signInSuccessUrl': '/',
+      'signInSuccessUrl': '/challenges',
       'signInOptions': [
         // Leave the lines as is for the providers you want to offer your users.
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
         // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-        // firebase.auth.GithubAuthProvider.PROVIDER_ID,
+        firebase.auth.GithubAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID
       ],
       // 'signInFlow': 'popup',
 
-      'callbacks': {
-        'signInSuccess': function (currentUser, credential, redirectUrl) {
-          browserHistory.push('/');
-          // Do something.
-          // Return type determines whether we continue the redirect automatically
-          // or whether we leave that to developer to handle.
-          return true;
-        }
-      }
+      // 'callbacks': {
+      //   'signInSuccess': function (currentUser, credential, redirectUrl) {
+      //     alert(redirectUrl)
+      //     browserHistory.push('/challenges');
+      //     // Do something.
+      //     // Return type determines whether we continue the redirect automatically
+      //     // or whether we leave that to developer to handle.
+      //     return true;
+      //   }
+      // }
       // Terms of service url.
       // 'tosUrl': 'http://google.com',
     };

@@ -18,6 +18,7 @@ var config = {
 firebase.initializeApp(config);
 
 function requireAuth(nextState, replace) {
+  debugger
   if(null === firebase.auth().currentUser) {
     replace({
       pathname: '/login',
@@ -35,6 +36,7 @@ render((
       <Route component={Challenge}  path="/challenges/:challenge_id" />
       <Route component={Photos} path="/photos" />
     </Route>
+
     <Route component={Login} path="/login" />
 
   </Router>
@@ -59,19 +61,19 @@ firebase.auth().onAuthStateChanged(function(user) {
         });
       }
 
-      //Wait to render app until Firebase figures out what it's doing with user
-      render((
-        <Router history={browserHistory}>
-          <Route component={App} path="/" onEnter={requireAuth}>
-            <IndexRoute component={Challenges}  />
-            <Route component={Challenges} user={user} path="/challenges" />
-            <Route component={Challenge} user={user} path="/challenges/:challenge_id" />
-            <Route component={Photos} user={user} path="/photos" />
-          </Route>
-          <Route component={Login} path="/login" />
-
-        </Router>
-      ), document.getElementById('app'));
+      // //Wait to render app until Firebase figures out what it's doing with user
+      // render((
+      //   <Router history={browserHistory}>
+      //     <Route component={App} path="/" onEnter={requireAuth}>
+      //       <IndexRoute component={Challenges}  />
+      //       <Route component={Challenges} user={user} path="/challenges" />
+      //       <Route component={Challenge} user={user} path="/challenges/:challenge_id" />
+      //       <Route component={Photos} user={user} path="/photos" />
+      //     </Route>
+      //     <Route component={Login} path="/login" />
+      //
+      //   </Router>
+      // ), document.getElementById('app'));
     });
 
 
