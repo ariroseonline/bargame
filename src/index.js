@@ -26,6 +26,20 @@ function requireAuth(nextState, replace) {
   }
 }
 
+//Wait to render app until Firebase figures out what it's doing with user
+render((
+  <Router history={browserHistory}>
+    <Route component={App} path="/" onEnter={requireAuth}>
+      <IndexRoute component={Challenges}  />
+      <Route component={Challenges} path="/challenges" />
+      <Route component={Challenge}  path="/challenges/:challenge_id" />
+      <Route component={Photos} path="/photos" />
+    </Route>
+    <Route component={Login} path="/login" />
+
+  </Router>
+), document.getElementById('app'));
+
 //Always be watching for sign in/out changes
 firebase.auth().onAuthStateChanged(function(user) {
 
