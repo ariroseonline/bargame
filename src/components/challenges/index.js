@@ -8,7 +8,8 @@ let Challenges = React.createClass({
   mixins: [ReactFireMixin],
 
   propTypes: {
-    children: PropTypes.node
+    children: PropTypes.node,
+    user: PropTypes.object
   },
 
   getInitialState() {
@@ -17,9 +18,11 @@ let Challenges = React.createClass({
     }
   },
 
-  componentDidMount() {
-    // let ref = firebase.database().ref('challenges').orderByChild('level').equalTo(this.props.route.user.level + 1);
-    // this.bindAsObject(ref, 'challenges');
+  componentWillReceiveProps: function(nextProps) {
+    if(nextProps.user && !this.state.challenges.length) { //just checking to see if this work hasn't already been done. This lifecycle methods is prone to be called multiple times.
+      let ref = firebase.database().ref('challenges').orderByChild('level').equalTo(nextProps.user.level + 1);
+      this.bindAsObject(ref, 'challenges');
+    }
   },
 
   renderChallenges() {
@@ -40,7 +43,7 @@ let Challenges = React.createClass({
   render() {
     return (
       <div>
-        <h1>Challenges {window.yo}</h1>
+        <h1>Challenges</h1>
         { this.renderChallenges() }
       </div>
     )

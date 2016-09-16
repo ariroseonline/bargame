@@ -8,7 +8,7 @@ let Challenge = React.createClass({
 
   propTypes: {
     children: PropTypes.node,
-    route: PropTypes.object //really looking for a way to validate route.user
+    user: PropTypes.object
   },
 
   getInitialState() {

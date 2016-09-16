@@ -12,11 +12,19 @@ let App = React.createClass({
     children: PropTypes.node
   },
 
+  getInitialState() {
+    return {
+      user: {}
+    }
+  },
+
   componentDidMount() {
-    attachFirebaseAuthListener()
+    attachFirebaseAuthListener(this)
   },
 
   render() {
+    var childrenWithProps = React.cloneElement(this.props.children, { user: this.state.user});
+
     return (
       <div>
         <div id="sign-in-status"></div>
@@ -30,7 +38,7 @@ let App = React.createClass({
         </ul>
 
 
-        {this.props.children}
+        {childrenWithProps}
       </div>
     )
   }

@@ -36,6 +36,8 @@ function requireAuth (nextState, replace) {
 }
 
 //Wait to render app until Firebase figures out what it's doing with user
+//Couldn't we just use firebase.auth().onAuthStateChanged(function(user) {})
+// and only run the render the first time (and reload the page on login)? Thus we've gotten the user (if there is one) and then react won't rerender the whole app again.
 render((
   <Router history={browserHistory}>
     <Route component={App} path="/">
