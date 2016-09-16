@@ -1,0 +1,146 @@
+
+  [ {
+    "id": 0,
+    "level" : 1,
+    "desc" : "Finish your drink in one attempt.",
+    "name" : "The Chug"
+  }, {
+    "id": 1,
+    "level" : 1,
+    "desc" : "Find someone with bigger hands and make a hand-by-hand comparison",
+    "name" : "Big Hands"
+  }, {
+    "id": 2,
+    "level" : 1,
+    "desc" : "Find two people the same age as you",
+    "name" : "Ageism"
+  }, {
+    "id": 3,
+    "level" : 1,
+    "desc" : "Take a photo of someone else taking a photo of you.",
+    "name" : "Inception"
+  }, {
+    "id": 4,
+    "level" : 1,
+    "desc" : "Take a photo of 3 people doing 'See no evil', 'Hear no evil', 'Speak no evil'",
+    "name" : "Three Wise Monkeys"
+  }, {
+    "id": 5,
+    "level" : 2,
+    "desc" : "Borrow a pair of glasses that don't work at all on your face",
+    "name" : "Do These Make Me Look Horrible?"
+  } ,
+ {
+    "id": 6,
+   "level" : 2,
+   "desc" : "Find someone who disagrees with you on an issue. Then shake hands, smile, and waive at the camera.",
+    "name" : "Diplomatic Photo-op"
+  }, {
+    "id": 7,
+    "level" : 2,
+    "desc" : "Take a picture with 3 or more necklaces you can borrow",
+    "name" : "More Necklace"
+  }, {
+    "id": 8,
+    "level" : 2,
+    "desc" : "Drink an entire beer through a straw",
+    "name" : "Siphon"
+  }, {
+    "id": 9,
+    "level" : 3,
+    "desc" : "Have a thumb-war of 3 or more people.",
+    "name" : "Make it a Three-Way"
+  }, {
+    "id": 10,
+    "level" : 3,
+
+    "desc" : "Take a picture with the host",
+    "name" : "It's My Party and I'll Smile if I Want to"
+  } ,
+  {
+    "id": 11,
+    "level" : 3,
+    "desc" : "Get a picture with 2 bearded men, who can't be smiling and must be flexing in some way.",
+    "name" : "Bearded Men Fantasy"
+  }, {
+    "id": 12,
+    "level" : 3,
+    "desc" : "Snap a picture of you (or someone else) sitting on a toilet.",
+    "name" : "Porcelain"
+  }, {
+    "id": 13,
+    "level" : 4,
+    "desc" : "Take a group photo of at least 5 people in ascending height",
+    "name" : "Human Incline"
+  } ,
+  {
+    "id": 14,
+    "level" : 4,
+    "desc" : "Find ten quarters",
+    "name" : "Loose Change"
+  }, {
+    "id": 15,
+    "level" : 4,
+    "desc" : "Write a poem and give it to someone you haven't met before tonight.",
+    "name" : "Poem"
+  }, {
+    "id": 16,
+    "level" : 4,
+    "desc" : "Switch an item of clothing with someone you've never met before tonight",
+    "name" : "Switcheroo"
+  } ,
+   {
+    "id": 17,
+     "level" : 5,
+    "desc" : "Find ten quarters",
+    "name" : "Loose Change"
+  }, {
+    "id": 18,
+    "level" : 5,
+    "desc" : "Snap a picture of you (or someone else) sitting on a toilet.",
+    "name" : "Porcelain"
+  }, {
+    "id": 19,
+    "level" : 5,
+    "desc" : "Propose to someone you didn't know before tonight",
+    "name" : "Proposal"
+  }, {
+    "id": 20,
+    "level" : 5,
+    "desc" : "Find a coin minted in 2013",
+    "name" : "Old Money"
+  } ]
+
+
+//
+//Write a poem and give it to someone.
+//Find two people the same age as you
+//Propose to someone you didn't know before tonight
+//Take a prom photo with someone at least 1 foot taller or shorter than you.
+//Convince someone you didn't know before tonight to swap drinks with you.
+//Take a picture with 3 or more necklaces.
+//Bite into a hamburger.
+//Switch an item of clothing with someone you've never met before tonight
+//Play rock paper scissors with the bartender. Win or lose, buy him or her a drink.
+//Find a new pair of glasses that don't work at all on your face
+//Take a photo with at least two others with smiling with lemon or lime wedges
+//Get a pen/sharpie tattoo of your high school crush's name or portrait
+////Collect 10 quarters
+//Take a group photo of at least 5 people in ascending height
+//Take a picture with the host
+//Have someone replace your arms with their's or vice versa. Bonus points for including outside objects and making the other person look ridiculous.
+//Speak no evil, See no evil, Hear no evil
+//Three people wearing the same color
+//Drink an entire beer through a straw
+//Take an inception picture
+//Make a napkin contract with at least another person, signed by all parties, that must be followed for the next year
+//Look like your boyfriend/girlfriend just broke up with you
+//Take a picture of your shoes on your hands.
+//Play paddycake with someone
+//Thumbwar with 3 or more people.
+//Find a coin from 2015
+//Tie the shoelaces of someone you haven't met before tonight'
+//Find someone born on a different continent
+//Find someone born in the same month as you
+//
+//

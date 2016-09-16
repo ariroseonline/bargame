@@ -1,13 +1,12 @@
 import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router'
-import ReactFireMixin from 'reactfire'
 import style from './style.css'
 
 let Photos = React.createClass({
-  mixins: [ReactFireMixin],
 
   propTypes: {
-    children: PropTypes.node
+    children: PropTypes.node,
+    route: PropTypes.object
   },
 
   getInitialState() {

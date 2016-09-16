@@ -3,6 +3,7 @@ import { render } from 'react-dom'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import App from './components/app'
 import Challenges from './components/challenges'
+import Challenge from './components/challenge'
 import Photos from './components/photos'
 import Login from './components/login'
 // import firebase from 'firebase'
@@ -27,27 +28,15 @@ function requireAuth(nextState, replace) {
 
 //Always be watching for sign in/out changes
 firebase.auth().onAuthStateChanged(function(user) {
-  //Wait to render app until Firebase figures out what it's doing
-  render((
-    <Router history={browserHistory}>
-      <Route component={App} path="/" onEnter={requireAuth}>
-        <IndexRoute component={Challenges}  />
-        <Route component={Challenges} path="/challenges" />
-        <Route component={Photos} user={user} path="/photos" />
-      </Route>
-      <Route component={Login} path="/login" />
-
-    </Router>
-  ), document.getElementById('app'));
 
   if (user) {
     // User is signed in.
-    //add user to database if not already there
     var usersRef = firebase.database().ref('users');
     usersRef.child(user.uid).once('value', function(snapshot) {
+      let user =  snapshot.val();
 
+      //add user to database if not already there
       if(snapshot.val() === null) {
-
         usersRef.child(user.uid).set({
           provider:  user.providerData[0].providerId,
           name: user.providerData[0].displayName,
@@ -55,14 +44,28 @@ firebase.auth().onAuthStateChanged(function(user) {
           level: 0
         });
       }
+
+      //Wait to render app until Firebase figures out what it's doing with user
+      render((
+        <Router history={browserHistory}>
+          <Route component={App} path="/" onEnter={requireAuth}>
+            <IndexRoute component={Challenges}  />
+            <Route component={Challenges} user={user} path="/challenges" />
+            <Route component={Challenge} user={user} path="/challenges/:challenge_id" />
+            <Route component={Photos} user={user} path="/photos" />
+          </Route>
+          <Route component={Login} path="/login" />
+
+        </Router>
+      ), document.getElementById('app'));
     });
-
-
 
 
   } else {
     // User is signed out.
   }
+
+
 }, function(error) {
   console.log(error);
 });
