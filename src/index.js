@@ -41,7 +41,6 @@ function requireAuth (nextState, replace) {
 render((
   <Router history={browserHistory}>
     <Route component={App} path="/">
-      <IndexRoute component={Challenges}  />
       <Route component={Challenges} path="/challenges" onEnter={requireAuth} />
       <Route component={Challenge}  path="/challenges/:challenge_id" onEnter={requireAuth} />
       <Route component={Photos} path="/photos" onEnter={requireAuth}/>

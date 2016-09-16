@@ -18,6 +18,7 @@ let Photos = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
+
       if (nextProps.user.level > 0) {
         var ref = firebase.database().ref("photos").orderByChild('level').endAt(nextProps.user.level).once('value', function (snapshot) {
           this.setState({
