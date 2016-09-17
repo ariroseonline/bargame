@@ -58,7 +58,7 @@ var Main = React.createClass({
     }
   },
   componentWillMount: function() {
-
+    //MIGHT BE ABLE TO COMBINE  THIS WITH SAME HANDLER IN index.js
     firebase.auth().onAuthStateChanged(firebaseUser => {
 
       this.setState({
@@ -118,6 +118,9 @@ var Main = React.createClass({
         </Link>
       </li>;
     }
+
+    let childrenWithUser = React.cloneElement(this.props.children, { user: this.state.user});
+
     return (
       <span>
                 <nav className="navbar navbar-default navbar-static-top">
@@ -150,7 +153,8 @@ var Main = React.createClass({
                 </nav>
                 <div className="container">
                     <div className="row">
-                        {this.props.children}
+                      {childrenWithUser}
+
                     </div>
                 </div>
             </span>
