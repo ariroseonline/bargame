@@ -13,25 +13,38 @@ let Challenges = React.createClass({
   getInitialState() {
     return {
       challenges: [],
+      level: 0
     }
   },
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.user) {
+      this.setState({
+        level: nextProps.user.level
+      });
+    }
+
+
+  },
+
   componentDidMount: function() {
-      let ref = firebase.database().ref('challenges').orderByChild('level').equalTo(1);
-      // this.bindAsObject(ref, 'challenges');
+    let ref = firebase.database().ref('challenges').orderByChild('level');
+      this.bindAsObject(ref, 'challenges');
 
   },
 
   renderChallenges() {
     return (
       <ul>
-        {this.state.challenges.map(function(challenge, i){
-          console.log('CHALLENGE',challenge)
-          return <li key={i}>
-            <h1>{challenge.name}</h1>
-            <h2>{challenge.desc}</h2>
-            <Link to={`/challenges/${challenge.id}`}>Select</Link>
-            </li>
+        {this.state.challenges.map((challenge, i)=>{
+          if(challenge.level <= this.state.level) {
+            return (<li key={i}>
+              <h1>{challenge.name}</h1>
+              <h2>{challenge.desc}</h2>
+              <Link to={`/challenges/${challenge.id}`}>Select</Link>
+            </li>)
+          }
+
         })}
       </ul>
     )
