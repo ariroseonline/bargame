@@ -58,9 +58,8 @@ var Main = React.createClass({
     }
   },
   componentWillMount: function() {
-    //MIGHT BE ABLE TO COMBINE  THIS WITH SAME HANDLER IN index.js
+    //MIGHT BE ABLE TO COMBINE THIS WITH SAME HANDLER IN index.js
     firebase.auth().onAuthStateChanged(firebaseUser => {
-
       this.setState({
         loggedIn: (null !== firebaseUser)
       })
@@ -72,23 +71,17 @@ var Main = React.createClass({
         var usersRef = firebase.database().ref('users');
         usersRef.child(firebaseUser.uid).once('value', (snapshot) => {
           let userRecord = snapshot.val();
-          //add user to database if not already there
           if(userRecord === null) {
-            usersRef.child(firebaseUser.uid).set({
-              provider:  firebaseUser.providerData[0].providerId,
-              name: firebaseUser.providerData[0].displayName,
-              email: firebaseUser.providerData[0].email,
-              level: 0
-            });
 
-            //Set state newly created user
-            this.setState({ user: {
-              uid: firebaseUser.uid,
-              provider:  firebaseUser.providerData[0].providerId,
-              name: firebaseUser.providerData[0].displayName,
-              email: firebaseUser.providerData[0].email,
-              level: 0
-            }})
+
+            // //Set state newly created user
+            // this.setState({ user: {
+            //   uid: firebaseUser.uid,
+            //   provider:  firebaseUser.providerData[0].providerId,
+            //   name: firebaseUser.providerData[0].displayName,
+            //   email: firebaseUser.providerData[0].email,
+            //   level: 0
+            // }})
 
           } else {
             //User already in database. Just set state with it.

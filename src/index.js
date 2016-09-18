@@ -20,35 +20,34 @@ var config = {
 firebase.initializeApp(config);
 
 
-// function requireAuth(nextState, replace) {
-//
-//
-//
-//   if (null === firebase.auth().currentUser) {
-//     replace({
-//       pathname: '/login',
-//       state: {nextPathname: nextState.location.pathname}
-//     })
-//   }
-// }
-
 function requireAuth(nextState, replace, callback) {
 
   firebase.auth().onAuthStateChanged((user) => {
+
+
     if (!user) {
-      replace({
-        pathname: '/login',
-        state: { nextPathname: nextState.location.pathname },
-      });
+      let hasLocalStorageUser = false;
+      for (let key in localStorage) {
+        if (key.startsWith("firebase:authUser:")) {
+          hasLocalStorageUser = true;
+        }
+      }
+      if (!hasLocalStorageUser) {
+        console.log('Attempting to access a secure route. Please authenticate first.');
+        replace({
+          pathname: '/login',
+          state: { nextPathname: nextState.location.pathname }
+        });
+      }
+      //
+      // replace({
+      //   pathname: '/login',
+      //   state: { nextPathname: nextState.location.pathname },
+      // });
     }
     callback();
   });
 }
-
-
-//Wait to render main until Firebase figures out what it's doing with user
-//Couldn't we just use firebase.auth().onAuthStateChanged(function(user) {})
-// and only run the render the first time (and reload the page on login)? Thus we've gotten the user (if there is one) and then react won't rerender the whole main again.
 
 render((
   <Router history={browserHistory}>
