@@ -47,11 +47,6 @@ let Challenges = React.createClass({
     });
 
     uploadTask.then((snapshot)=> {
-      // let newChallenges = this.state.challenges;
-      // let newChallenge = _.extend(_.findWhere(newChallenges, {id: challengeKey}),  { completed: true });
-      // this.setState({
-      //   challenges: newChallenges
-      // })
       let uid = firebase.auth().currentUser.uid;
       firebase.database().ref(`users/${uid}/challenges/${challengeKey}`).update({ completed: true })
     });
@@ -93,7 +88,7 @@ let Challenges = React.createClass({
         </div>
       )
     } else {
-      return (<div>USER NOT RECEIVED YET ASYNCRONOUSLY</div>)
+      return (<div>Loading User...</div>)
     }
 
   }
