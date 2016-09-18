@@ -1,115 +1,117 @@
-
-  [ {
+{
+  "fdajklfdajsk223": {
     "id": 0,
     "level" : 1,
     "desc" : "Finish your drink in one attempt.",
     "name" : "The Chug"
-  }, {
+  },
+  "fdasfds":{
     "id": 1,
     "level" : 1,
     "desc" : "Find someone with bigger hands and make a hand-by-hand comparison",
     "name" : "Big Hands"
-  }, {
+  }, "f3fsaf":{
     "id": 2,
     "level" : 1,
     "desc" : "Find two people the same age as you",
     "name" : "Ageism"
-  }, {
+  }, "fdasf22":{
     "id": 3,
     "level" : 1,
     "desc" : "Take a photo of someone else taking a photo of you.",
     "name" : "Inception"
-  }, {
+  }, "fdasfa23":{
     "id": 4,
     "level" : 1,
     "desc" : "Take a photo of 3 people doing 'See no evil', 'Hear no evil', 'Speak no evil'",
     "name" : "Three Wise Monkeys"
-  }, {
+  }, "fdsajl23":{
     "id": 5,
     "level" : 2,
     "desc" : "Borrow a pair of glasses that don't work at all on your face",
     "name" : "Do These Make Me Look Horrible?"
   } ,
- {
+"fdsajklj324": {
     "id": 6,
    "level" : 2,
    "desc" : "Find someone who disagrees with you on an issue. Then shake hands, smile, and waive at the camera.",
     "name" : "Diplomatic Photo-op"
-  }, {
+  }, "fdsajlkj543":{
     "id": 7,
     "level" : 2,
     "desc" : "Take a picture with 3 or more necklaces you can borrow",
     "name" : "More Necklace"
-  }, {
+  }, "fdsajl53":{
     "id": 8,
     "level" : 2,
     "desc" : "Drink an entire beer through a straw",
     "name" : "Siphon"
-  }, {
+  }, "jkflasd32":{
     "id": 9,
     "level" : 3,
     "desc" : "Have a thumb-war of 3 or more people.",
     "name" : "Make it a Three-Way"
-  }, {
+  },"fdasjkl432": {
     "id": 10,
     "level" : 3,
 
     "desc" : "Take a picture with the host",
-    "name" : "It's My Party and I'll Smile if I Want to"
+    "name" : "It's My Party and Ill Smile if I Want to"
   } ,
-  {
+ "fdsalkj23": {
     "id": 11,
     "level" : 3,
     "desc" : "Get a picture with 2 bearded men, who can't be smiling and must be flexing in some way.",
     "name" : "Bearded Men Fantasy"
-  }, {
+  }, "fjadskljf423":{
     "id": 12,
     "level" : 3,
     "desc" : "Snap a picture of you (or someone else) sitting on a toilet.",
     "name" : "Porcelain"
-  }, {
+  }, "fdasjfklj3243":{
     "id": 13,
     "level" : 4,
     "desc" : "Take a group photo of at least 5 people in ascending height",
     "name" : "Human Incline"
   } ,
-  {
+  "fjsaklfj32":{
     "id": 14,
     "level" : 4,
     "desc" : "Find ten quarters",
     "name" : "Loose Change"
-  }, {
+  }, "fdsajkfl235":{
     "id": 15,
     "level" : 4,
     "desc" : "Write a poem and give it to someone you haven't met before tonight.",
     "name" : "Poem"
-  }, {
+  }, "fasfjkl232":{
     "id": 16,
     "level" : 4,
     "desc" : "Switch an item of clothing with someone you've never met before tonight",
     "name" : "Switcheroo"
   } ,
-   {
+   "fdasjkl423":{
     "id": 17,
      "level" : 5,
     "desc" : "Find ten quarters",
     "name" : "Loose Change"
-  }, {
+  }, "fdasjfkl243":{
     "id": 18,
     "level" : 5,
     "desc" : "Snap a picture of you (or someone else) sitting on a toilet.",
     "name" : "Porcelain"
-  }, {
+  }, "fdsajlk23":{
     "id": 19,
     "level" : 5,
     "desc" : "Propose to someone you didn't know before tonight",
     "name" : "Proposal"
-  }, {
+  }, "fdasjkl42323":{
     "id": 20,
     "level" : 5,
     "desc" : "Find a coin minted in 2013",
     "name" : "Old Money"
-  } ]
+  }
+}
 
 
 //

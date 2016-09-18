@@ -21,7 +21,7 @@ let Challenges = React.createClass({
   componentDidMount() {
     let uid = firebase.auth().currentUser.uid;
     let ref = firebase.database().ref(`users/${uid}/challenges`).orderByChild('level');
-    this.bindAsObject(ref, 'challenges');
+    this.bindAsArray(ref, 'challenges');
   },
 
   handleChallengeInput(challengeId, challengeName) {
@@ -47,38 +47,42 @@ let Challenges = React.createClass({
     });
 
     uploadTask.then((snapshot)=> {
-      let newChallenges = this.state.challenges;
-      let newChallenge = _.extend(_.findWhere(newChallenges, {id: challengeId}),  { completed: true });
-      this.setState({
-          challenges: newChallenges
-      })
+      // let newChallenges = this.state.challenges;
+      // let newChallenge = _.extend(_.findWhere(newChallenges, {id: challengeId}),  { completed: true });
+      // this.setState({
+      //   challenges: newChallenges
+      // })
+      let uid = firebase.auth().currentUser.uid;
+
+      firebase.database().ref(`users/${uid}/challenges`).orderByChild('id').equalTo(challengeId).set({ yo: "yo"})
     });
 
 
   },
 
   renderChallenges() {
+      return (
+        <ul>
+          {this.state.challenges.map((challenge, i)=> {
+            console.log('USER', this.props.user, this.props.user.level)
+            if (challenge.level <= this.props.user.level) {
+              {/*console.log('CHALLENGE', challenge);*/}
+              return (
+                <li className={challenge.completed ? style.completed :  null} key={i}>
+                  <h1>{challenge.name}</h1>
+                  <h2>{challenge.desc}</h2>
+                  <input type="file" accept="image/*" capture="camera" id={`challenge-upload-${challenge.id}`}
+                         onChange={()=> {
+                           this.handleChallengeInput(challenge.id, challenge.name)
+                         }}/>
+                </li>
+              )
+            }
+          })}
+        </ul>
+      )
 
-    return (
-      <ul>
-        {this.state.challenges.map((challenge, i)=> {
-          console.log('USER', this.props.user, this.props.user.level)
-          if (challenge.level <= this.props.user.level) {
-            {/*console.log('CHALLENGE', challenge);*/}
-            return (
-              <li className={challenge.completed ? style.completed :  null} key={i}>
-                <h1>{challenge.name}</h1>
-                <h2>{challenge.desc}</h2>
-                <input type="file" accept="image/*" capture="camera" id={`challenge-upload-${challenge.id}`}
-                       onChange={()=> {
-                         this.handleChallengeInput(challenge.id, challenge.name)
-                       }}/>
-              </li>
-            )
-          }
-        })}
-      </ul>
-    )
+
   },
 
   render() {
