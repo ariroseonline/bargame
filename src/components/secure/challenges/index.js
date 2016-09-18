@@ -24,8 +24,8 @@ let Challenges = React.createClass({
     this.bindAsArray(ref, 'challenges');
   },
 
-  handleChallengeInput(challengeId, challengeName) {
-    var fileUpload = document.getElementById(`challenge-upload-${challengeId}`);
+  handleChallengeInput(challengeKey, challengeName) {
+    var fileUpload = document.getElementById(`challenge-upload-${challengeKey}`);
     var file = fileUpload.files[0]; // get the first file uploaded
 
     // Create the file metadata
@@ -48,13 +48,12 @@ let Challenges = React.createClass({
 
     uploadTask.then((snapshot)=> {
       // let newChallenges = this.state.challenges;
-      // let newChallenge = _.extend(_.findWhere(newChallenges, {id: challengeId}),  { completed: true });
+      // let newChallenge = _.extend(_.findWhere(newChallenges, {id: challengeKey}),  { completed: true });
       // this.setState({
       //   challenges: newChallenges
       // })
       let uid = firebase.auth().currentUser.uid;
-
-      firebase.database().ref(`users/${uid}/challenges`).orderByChild('id').equalTo(challengeId).set({ yo: "yo"})
+      firebase.database().ref(`users/${uid}/challenges/${challengeKey}`).update({ completed: true })
     });
 
 
@@ -71,9 +70,9 @@ let Challenges = React.createClass({
                 <li className={challenge.completed ? style.completed :  null} key={i}>
                   <h1>{challenge.name}</h1>
                   <h2>{challenge.desc}</h2>
-                  <input type="file" accept="image/*" capture="camera" id={`challenge-upload-${challenge.id}`}
+                  <input type="file" accept="image/*" capture="camera" id={`challenge-upload-${challenge['.key']}`}
                          onChange={()=> {
-                           this.handleChallengeInput(challenge.id, challenge.name)
+                           this.handleChallengeInput(challenge['.key'], challenge.name)
                          }}/>
                 </li>
               )
