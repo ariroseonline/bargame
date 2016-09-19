@@ -49,12 +49,16 @@
 
 import React, {Component, PropTypes} from 'react'
 import {Router, Link, browserHistory} from 'react-router'
+import ReactFireMixin from 'reactfire'
 import style from './style.css'
 
 var Main = React.createClass({
+  mixins: [ReactFireMixin],
+
   getInitialState: function() {
     return {
-      loggedIn: (null !== firebase.auth().currentUser)
+      loggedIn: (null !== firebase.auth().currentUser),
+      user: null
     }
   },
   componentWillMount: function() {
@@ -62,10 +66,13 @@ var Main = React.createClass({
     firebase.auth().onAuthStateChanged(firebaseUser => {
       this.setState({
         loggedIn: (null !== firebaseUser)
-      })
+      });
 
       if (firebaseUser) {
         console.log("Logged IN", firebaseUser);
+
+        let ref = firebase.database().ref(`users/${firebaseUser.uid}`);
+        this.bindAsObject(ref, 'user');
 
         // User is signed in.
         var usersRef = firebase.database().ref('users');
@@ -85,13 +92,21 @@ var Main = React.createClass({
 
           } else {
             //User already in database. Just set state with it.
-            this.setState({ user: userRecord})
+            // this.setState({ user: userRecord})
           }
         });
       } else {
         console.log('Not logged in');
       }
     });
+  },
+
+  componentDidMount() {
+    let currentUser = firebase.auth().currentUser;
+    if(currentUser) {
+
+    }
+
   },
   render: function() {
     var loginOrOut;

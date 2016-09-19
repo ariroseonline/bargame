@@ -3,6 +3,7 @@ import {Link} from 'react-router'
 import style from './style.css'
 import ReactFireMixin from 'reactfire'
 import _ from 'underscore'
+import settings from '../../../settings'
 
 let Challenges = React.createClass({
   mixins: [ReactFireMixin],
@@ -14,7 +15,8 @@ let Challenges = React.createClass({
 
   getInitialState() {
     return {
-      challenges: []
+      challenges: [],
+      currentLevel: null
     }
   },
 
@@ -38,7 +40,6 @@ let Challenges = React.createClass({
     var formattedChallengeName = challengeName.replace(/\W+/g, '-').toLowerCase();
     var storageRef = firebase.storage().ref(`images/${userName}/${formattedChallengeName}`); //may have to put filetype suffix on this
 
-
     //Save
     var uploadTask = storageRef.put(file);
 
@@ -46,11 +47,29 @@ let Challenges = React.createClass({
       console.log('PROGRESS ', (snapshot.bytesTransferred / snapshot.totalBytes) * 100 + '%'); // progress of upload
     });
 
+
     uploadTask.then((snapshot)=> {
       let uid = firebase.auth().currentUser.uid;
-      firebase.database().ref(`users/${uid}/challenges/${challengeKey}`).update({ completed: true })
-    });
+      firebase.database().ref(`users/${uid}/challenges/${challengeKey}`).update({ completed: true });
 
+      //check to see if user has surpassed threshold
+      let levelChallenges = _.filter(this.state.challenges, (challenge)=>{
+        return challenge.level === this.props.user.level - 1;
+      });
+
+      let levelChallengesCompleted = _.filter(levelChallenges, (challenge) => {
+        return challenge.completed === true;
+      });
+
+      //if so, update user level
+      if(levelChallengesCompleted.length >= settings.challengesThresholdPerLevel) {
+        let uid = firebase.auth().currentUser.uid;
+        let ref = firebase.database().ref(`users/${uid}`).update({
+          level: this.props.user.level + 1
+        })
+      }
+
+    });
 
   },
 
@@ -58,7 +77,6 @@ let Challenges = React.createClass({
       return (
         <ul>
           {this.state.challenges.map((challenge, i)=> {
-            console.log('USER', this.props.user, this.props.user.level)
             if (challenge.level <= this.props.user.level) {
               {/*console.log('CHALLENGE', challenge);*/}
               return (

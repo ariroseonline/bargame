@@ -66,7 +66,7 @@ var Register = React.createClass({
         provider: user.providerData[0].providerId,
         name: user.providerData[0].displayName,
         email: user.providerData[0].email,
-        level: 2
+        level: 1
       });
 
       var userChallengesObj = {};
