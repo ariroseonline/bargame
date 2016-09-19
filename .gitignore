@@ -5,4 +5,7 @@ npm-debug.log
 .idea/
 
 .idea/jsLibraryMappings.xml
-public/*
+
+public
+
+
