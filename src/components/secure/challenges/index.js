@@ -59,7 +59,7 @@ let Challenges = React.createClass({
     //prepare reference file name in Firebase Storage
     let uid = firebase.auth().currentUser.uid;
     let formattedChallengeName = challengeName.replace(/\W+/g, '-').toLowerCase();
-    let storageRef = firebase.storage().ref(`challenge-images/${uid}/${formattedChallengeName}`); //may have to put filetype suffix on this
+    let storageRef = firebase.storage().ref(`challenge-photos/${uid}/${formattedChallengeName}`); //may have to put filetype suffix on this
 
     //Save
     let uploadTask = storageRef.put(file);
@@ -77,13 +77,30 @@ let Challenges = React.createClass({
     let uid = firebase.auth().currentUser.uid;
 
     storageRef.getDownloadURL().then((photoURL)=> {
-      firebase.database().ref(`users/${uid}/challenges/${challengeKey}`).update({
+      //TODO: May just want to embed user and challenge in the photo object...
+      let newPhoto = {
         photoURL: photoURL,
-        completed: true
-      }).then(()=>{
-        //check to see if user has surpassed threshold to get to next level
-        this.checkUserLevel();
+        uid: uid
+      };
+
+      firebase.database().ref(`/users/${uid}/challenges/${challengeKey}`).once('value', (challenge)=> {
+        newPhoto.challengeId = challenge.val().id;
+        let newPhotoKey = firebase.database().ref().child('photos').push().key;
+
+        //save in 2 places per the firebase guidelines for easy-access, efficient, flat data storage
+        let updates = {};
+        updates['/photos/' + newPhotoKey] = newPhoto;
+        updates[`/users/${uid}/challenges/${challengeKey}/photoURL`] = photoURL;
+        updates[`/users/${uid}/challenges/${challengeKey}/completed`] = true;
+
+
+        firebase.database().ref().update(updates).then(()=>{
+          //check to see if user has surpassed threshold to get to next level
+          this.checkUserLevel();
+        });
       });
+
+
     });
   },
 
