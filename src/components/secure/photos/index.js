@@ -1,8 +1,11 @@
 import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router'
+import ReactFireMixin from 'reactfire'
 import style from './style.css'
+import _ from 'underscore'
 
 let Photos = React.createClass({
+  mixins: [ReactFireMixin],
 
   propTypes: {
     children: PropTypes.node,
@@ -11,24 +14,16 @@ let Photos = React.createClass({
 
   getInitialState() {
     return {
-      communityPhotos: [],
-      user: {}
+      communityPhotos: []
     }
-
   },
 
-  componentWillReceiveProps: function(nextProps) {
-
-      if (nextProps.user.level > 0) {
-        var ref = firebase.database().ref("photos").orderByChild('level').endAt(nextProps.user.level).once('value', function (snapshot) {
-          this.setState({
-            communityPhotos: snapshot.val()
-          })
-        }.bind(this));
-      }
+  componentDidMount() {
+    let ref = firebase.database().ref(`photos`).orderByChild('level');
+    this.bindAsArray(ref, 'communityPhotos');
   },
 
-  renderCommunityPhotos() {
+  renderPhotos(photos) {
     return (
       <div>
         <h1>Photos</h1>
@@ -36,8 +31,8 @@ let Photos = React.createClass({
         <h3>Now you can see all photos from level {this.props.user.level} and below.</h3>
         <p>Go back to <Link to="/challenges">Challenges</Link> to unlock more photos.</p>
         <ul>
-          {this.state.communityPhotos.map(function (photo, i) {
-            return <li key={i}><img src={photo.url} alt=""/></li>
+          {photos.map(function (photo, i) {
+            return <li key={i}><img src={photo.photoURL} alt=""/></li>
           }) }
         </ul>
       </div>
@@ -45,17 +40,24 @@ let Photos = React.createClass({
   },
 
   render() {
-    return (
-      <div>
+    if (this.props.user) {
+      let unlockedPhotos = _.filter(this.state.communityPhotos, (photo)=>{
+        return photo.level <= (this.props.user.level - 1); //Only show photos from levels they've ALREADY completed
+      });
 
-        { this.state.communityPhotos.length ?
-          this.renderCommunityPhotos() :
-          <h1>You haven't unlocked any levels yet :( Go take some photos in the <Link to="/challenges">Challenges</Link>
-             :)</h1>
-        }
+      return (
+        <div>
+          { unlockedPhotos.length ?
+            this.renderPhotos(unlockedPhotos) :
+            <h1>You haven't unlocked any levels yet :( Go take some photos in the <Link to="/challenges">Challenges</Link>
+              :)</h1>
+          }
+        </div>
+      )
+    } else {
+      return (<div>Loading Photos...</div>)
+    }
 
-      </div>
-    )
   }
 })
 

@@ -13,6 +13,7 @@ var Logout = React.createClass({
         firebase.auth().signOut();
         this.setState({loggedIn: false});
         // this.context.router.replace('/');
+        //TODO: I think you we want to reload the route...there's some problems with logging out and immediately logging in again
     },
     render: function () {
         return <p>You are now logged out</p>;

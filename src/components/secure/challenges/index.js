@@ -16,7 +16,7 @@ let Challenges = React.createClass({
   getInitialState() {
     return {
       challenges: [],
-      currentLevel: null
+      currentLevel: null //this doesn't do anything...may want to use it later for cleaner code
     }
   },
 
@@ -85,6 +85,7 @@ let Challenges = React.createClass({
 
       firebase.database().ref(`/users/${uid}/challenges/${challengeKey}`).once('value', (challenge)=> {
         newPhoto.challengeId = challenge.val().id;
+        newPhoto.level = challenge.val().level;
         let newPhotoKey = firebase.database().ref().child('photos').push().key;
 
         //save in 2 places per the firebase guidelines for easy-access, efficient, flat data storage
