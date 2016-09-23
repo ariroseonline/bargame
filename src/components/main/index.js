@@ -4,6 +4,8 @@ import ReactFireMixin from 'reactfire'
 import style from './style.css'
 import NotificationBadge from 'react-notification-badge';
 import {Effect} from 'react-notification-badge';
+import settings from '../../settings'
+import _ from 'underscore'
 
 var Main = React.createClass({
   mixins: [ReactFireMixin],
@@ -13,6 +15,7 @@ var Main = React.createClass({
       loggedIn: (null !== firebase.auth().currentUser),
       user: null,
       communityPhotos: [],
+      challenges: [],
       newPhotoNotificationsCount: 0,
       seenPhotosCount: 0
     }
@@ -27,70 +30,73 @@ var Main = React.createClass({
       if (firebaseUser) {
         console.log("Logged IN", firebaseUser);
 
-        let ref = firebase.database().ref(`users/${firebaseUser.uid}`);
-        this.bindAsObject(ref, 'user');
+        let userRef = firebase.database().ref(`users/${firebaseUser.uid}`);
+        this.bindAsObject(userRef, 'user');
 
+        //Don't think we need this DEPRECATE
         // User is signed in.
-        var usersRef = firebase.database().ref('users');
-        usersRef.child(firebaseUser.uid).once('value', (snapshot) => {
-          let userRecord = snapshot.val();
-          if (userRecord === null) {
+        // let usersRef = firebase.database().ref('users');
+        // usersRef.child(firebaseUser.uid).once('value', (snapshot) => {
+        //   let userRecord = snapshot.val();
+        //   if (userRecord === null) {
+        //
+        //
+        //   } else {
+        //     //User already in database. Just set state with it.
+        //     // this.setState({ user: userRecord})
+        //   }
+        // });
+
+        //setting up challenges realtime data.
+        let ref = firebase.database().ref(`users/${firebaseUser.uid}/challenges`).orderByChild('level');
+        this.bindAsArray(ref, 'challenges');
 
 
-            // //Set state newly created user
-            // this.setState({ user: {
-            //   uid: firebaseUser.uid,
-            //   provider:  firebaseUser.providerData[0].providerId,
-            //   name: firebaseUser.providerData[0].displayName,
-            //   email: firebaseUser.providerData[0].email,
-            //   level: 0
-            // }})
+        //setting up photos realtime data. Not using ReactFireMixin for this, because we have to do custom stuff in callback
+        let photosRef = firebase.database().ref(`photos`).orderByChild('level');
+        // this.bindAsArray(photosRef, 'communityPhotos');
+        let communityPhotos = this.state.communityPhotos;
+        //TODO may need child removed as well
+        photosRef.on("child_added", function(dataSnapshot) {
+          communityPhotos.push(dataSnapshot.val());
+          let newPhotoNotificationsCount = communityPhotos.length - this.state.seenPhotosCount;
 
-          } else {
-            //User already in database. Just set state with it.
-            // this.setState({ user: userRecord})
-          }
-        });
+          this.setState({
+            communityPhotos: communityPhotos,
+            newPhotoNotificationsCount: newPhotoNotificationsCount
+
+          });
+        }.bind(this));
+
+
+
       } else {
         console.log('Not logged in');
       }
     });
 
-    //testing
-    let ref = firebase.database().ref(`photos`).orderByChild('level');
-    // this.bindAsArray(ref, 'communityPhotos');
-    let communityPhotos = this.state.communityPhotos;
-    //TODO may need child removed as well
-    ref.on("child_added", function(dataSnapshot) {
-      communityPhotos.push(dataSnapshot.val());
-      let newPhotoNotificationsCount = communityPhotos.length - this.state.seenPhotosCount;
-
-      this.setState({
-        communityPhotos: communityPhotos,
-        newPhotoNotificationsCount: newPhotoNotificationsCount
-
-      });
-    }.bind(this));
   },
 
-  componentDidMount() {
-    let currentUser = firebase.auth().currentUser;
-    if (currentUser) {
+  updateUserLevel() {
+    let levelChallenges = _.filter(this.state.challenges, (challenge)=> {
+      return challenge.level === this.state.user.level;
+    });
 
+    let levelChallengesCompleted = _.filter(levelChallenges, (challenge) => {
+      return challenge.completed === true;
+    });
+
+    //if so, update user level
+    if (levelChallengesCompleted.length >= settings.challengesThresholdPerLevel) {
+      this.incrementUserLevel();
     }
-
-
   },
 
-  componentDidUpdate(prevProps, prevState) {
-
-    //when firebase updates community photos basically
-
-    // let newPhotoNotificationsCount = this.state.communityPhotos.length - this.state.newPhotoNotificationsCount;
-    // this.setState({
-    //   newPhotoNotificationsCount: newPhotoNotificationsCount
-    // });
-    // return true;
+  incrementUserLevel() {
+    let uid = firebase.auth().currentUser.uid;
+    let ref = firebase.database().ref(`users/${uid}`).update({
+      level: this.state.user.level + 1
+    })
   },
 
   resetPhotoNotifications() {
@@ -122,48 +128,50 @@ var Main = React.createClass({
     let childrenWithUser = React.cloneElement(this.props.children, {
       user: this.state.user,
       communityPhotos: this.state.communityPhotos,
-      resetPhotoNotifications: this.resetPhotoNotifications
+      resetPhotoNotifications: this.resetPhotoNotifications,
+      challenges: this.state.challenges,
+      updateUserLevel: this.updateUserLevel
     });
 
     return (
       <span>
-                <nav className="navbar navbar-default navbar-static-top">
-                    <div className="container">
-                        <div className="navbar-header">
-                            <Link to="/" className="navbar-brand">
-                                Bargame
-                            </Link>
-                        </div>
-                        <ul className="nav navbar-nav pull-right">
-                            <li>
-                                <Link to="/" className="navbar-brand">
-                                    Home
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/challenges" className="navbar-brand">
-                                    Challenges
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/photos" className="navbar-brand">
-                                    Photos
-                                  ({this.state.newPhotoNotificationsCount})
-                                  {<NotificationBadge count={this.state.newPhotoNotificationsCount}
-                                                     effect={Effect.ROTATE_Y}/> }
-                                </Link>
-                            </li>
-                          {register}
-                          {loginOrOut}
-                        </ul>
-                    </div>
-                </nav>
-                <div className="container">
-                    <div className="row">
-                      {childrenWithUser}
-                    </div>
+        <nav className="navbar navbar-default navbar-static-top">
+            <div className="container">
+                <div className="navbar-header">
+                    <Link to="/" className="navbar-brand">
+                        Bargame
+                    </Link>
                 </div>
-            </span>
+                <ul className="nav navbar-nav pull-right">
+                    <li>
+                        <Link to="/" className="navbar-brand">
+                            Home
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/challenges" className="navbar-brand">
+                            Challenges (Level {this.state.user.level})
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/photos" className="navbar-brand">
+                            Photos
+                          ({this.state.newPhotoNotificationsCount} new)
+                          {<NotificationBadge count={this.state.newPhotoNotificationsCount}
+                                             effect={Effect.ROTATE_Y}/> }
+                        </Link>
+                    </li>
+                  {register}
+                  {loginOrOut}
+                </ul>
+            </div>
+        </nav>
+        <div className="container">
+            <div className="row">
+              {childrenWithUser}
+            </div>
+        </div>
+    </span>
     )
   }
 });

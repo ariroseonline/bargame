@@ -2,15 +2,14 @@ import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router'
 import style from './style.css'
 import ReactFireMixin from 'reactfire'
-import _ from 'underscore'
-import settings from '../../../settings'
 
 let Challenges = React.createClass({
   mixins: [ReactFireMixin],
 
   propTypes: {
     children: PropTypes.node,
-    user: PropTypes.object
+    user: PropTypes.object,
+    challenges: PropTypes.array
   },
 
   getInitialState() {
@@ -20,33 +19,6 @@ let Challenges = React.createClass({
     }
   },
 
-  componentDidMount() {
-    let uid = firebase.auth().currentUser.uid;
-    let ref = firebase.database().ref(`users/${uid}/challenges`).orderByChild('level');
-    this.bindAsArray(ref, 'challenges');
-  },
-
-  checkUserLevel() {
-    let levelChallenges = _.filter(this.state.challenges, (challenge)=> {
-      return challenge.level === this.props.user.level;
-    });
-
-    let levelChallengesCompleted = _.filter(levelChallenges, (challenge) => {
-      return challenge.completed === true;
-    });
-
-    //if so, update user level
-    if (levelChallengesCompleted.length >= settings.challengesThresholdPerLevel) {
-      this.incrementUserLevel();
-    }
-  },
-
-  incrementUserLevel() {
-    let uid = firebase.auth().currentUser.uid;
-    let ref = firebase.database().ref(`users/${uid}`).update({
-      level: this.props.user.level + 1
-    })
-  },
 
   savePhoto(fileUpload, challengeKey, challengeName) {
     var file = fileUpload.files[0]; // get the first file uploaded
@@ -97,7 +69,7 @@ let Challenges = React.createClass({
 
         firebase.database().ref().update(updates).then(()=>{
           //check to see if user has surpassed threshold to get to next level
-          this.checkUserLevel();
+          this.props.updateUserLevel();
         });
       });
 
@@ -113,7 +85,7 @@ let Challenges = React.createClass({
   renderChallenges() {
     return (
       <ul>
-        {this.state.challenges.map((challenge, i)=> {
+        {this.props.challenges.map((challenge, i)=> {
           if (challenge.level <= this.props.user.level) {
             {/*console.log('CHALLENGE', challenge);*/
             }
