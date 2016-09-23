@@ -1,67 +1,23 @@
-// import React, {Component, PropTypes} from 'react'
-// import {Router, Link, browserHistory} from 'react-router'
-// import style from './style.css'
-// import ReactFireMixin from 'reactfire'
-// // import attachFirebaseAuthListener from '../../util/attachFirebaseAuthListener'
-// // import firebaseLogout from '../../util/firebaseLogout'
-//
-// let Main = React.createClass({
-//   mixins: [ReactFireMixin],
-//
-//   propTypes: {
-//     children: PropTypes.node
-//   },
-//
-//   getInitialState() {
-//     return {
-//       user: {}
-//     }
-//   },
-//
-//   componentDidMount() {
-//     // attachFirebaseAuthListener(this)
-//   },
-//
-//   render() {
-//     // var childrenWithProps = React.cloneElement(this.props.children, { user: this.state.user});
-//
-//     return (
-//       <div>
-//         <div id="sign-in-status"></div>
-//         <div id="sign-in"></div>
-//         <div id="account-details"></div>
-//         <h1>{'Bargame'}</h1>
-//         <ul>
-//           <li><Link to="/challenges">{'Challenges'}</Link></li>
-//           <li><Link to="/photos">{'Photos'}</Link></li>
-//           <li><a href="" onClick={firebaseLogout}>Log Out</a></li>
-//         </ul>
-//
-//
-//         {this.props.children}
-//       </div>
-//     )
-//   }
-// });
-//
-// export default Main;
-
-
 import React, {Component, PropTypes} from 'react'
 import {Router, Link, browserHistory} from 'react-router'
 import ReactFireMixin from 'reactfire'
 import style from './style.css'
+import NotificationBadge from 'react-notification-badge';
+import {Effect} from 'react-notification-badge';
 
 var Main = React.createClass({
   mixins: [ReactFireMixin],
 
-  getInitialState: function() {
+  getInitialState: function () {
     return {
       loggedIn: (null !== firebase.auth().currentUser),
-      user: null
+      user: null,
+      communityPhotos: [],
+      newPhotoNotificationsCount: 0,
+      seenPhotosCount: 0
     }
   },
-  componentWillMount: function() {
+  componentWillMount: function () {
     //MIGHT BE ABLE TO COMBINE THIS WITH SAME HANDLER IN index.js
     firebase.auth().onAuthStateChanged(firebaseUser => {
       this.setState({
@@ -78,7 +34,7 @@ var Main = React.createClass({
         var usersRef = firebase.database().ref('users');
         usersRef.child(firebaseUser.uid).once('value', (snapshot) => {
           let userRecord = snapshot.val();
-          if(userRecord === null) {
+          if (userRecord === null) {
 
 
             // //Set state newly created user
@@ -99,16 +55,52 @@ var Main = React.createClass({
         console.log('Not logged in');
       }
     });
+
+    //testing
+    let ref = firebase.database().ref(`photos`).orderByChild('level');
+    // this.bindAsArray(ref, 'communityPhotos');
+    let communityPhotos = this.state.communityPhotos;
+    //TODO may need child removed as well
+    ref.on("child_added", function(dataSnapshot) {
+      communityPhotos.push(dataSnapshot.val());
+      let newPhotoNotificationsCount = communityPhotos.length - this.state.seenPhotosCount;
+
+      this.setState({
+        communityPhotos: communityPhotos,
+        newPhotoNotificationsCount: newPhotoNotificationsCount
+
+      });
+    }.bind(this));
   },
 
   componentDidMount() {
     let currentUser = firebase.auth().currentUser;
-    if(currentUser) {
+    if (currentUser) {
 
     }
 
+
   },
-  render: function() {
+
+  componentDidUpdate(prevProps, prevState) {
+
+    //when firebase updates community photos basically
+
+    // let newPhotoNotificationsCount = this.state.communityPhotos.length - this.state.newPhotoNotificationsCount;
+    // this.setState({
+    //   newPhotoNotificationsCount: newPhotoNotificationsCount
+    // });
+    // return true;
+  },
+
+  resetPhotoNotifications() {
+    this.setState({
+      seenPhotosCount: this.state.newPhotoNotificationsCount + this.state.seenPhotosCount,
+      newPhotoNotificationsCount: 0
+    });
+  },
+
+  render: function () {
     var loginOrOut;
     var register;
     if (this.state.loggedIn) {
@@ -127,7 +119,11 @@ var Main = React.createClass({
       </li>;
     }
 
-    let childrenWithUser = React.cloneElement(this.props.children, { user: this.state.user});
+    let childrenWithUser = React.cloneElement(this.props.children, {
+      user: this.state.user,
+      communityPhotos: this.state.communityPhotos,
+      resetPhotoNotifications: this.resetPhotoNotifications
+    });
 
     return (
       <span>
@@ -152,6 +148,9 @@ var Main = React.createClass({
                             <li>
                                 <Link to="/photos" className="navbar-brand">
                                     Photos
+                                  ({this.state.newPhotoNotificationsCount})
+                                  {<NotificationBadge count={this.state.newPhotoNotificationsCount}
+                                                     effect={Effect.ROTATE_Y}/> }
                                 </Link>
                             </li>
                           {register}
@@ -162,7 +161,6 @@ var Main = React.createClass({
                 <div className="container">
                     <div className="row">
                       {childrenWithUser}
-
                     </div>
                 </div>
             </span>

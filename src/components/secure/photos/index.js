@@ -9,18 +9,23 @@ let Photos = React.createClass({
 
   propTypes: {
     children: PropTypes.node,
-    user: PropTypes.object
+    user: PropTypes.object,
+    resetPhotoNotifications: PropTypes.func
   },
 
-  getInitialState() {
-    return {
-      communityPhotos: []
-    }
-  },
+  // getInitialState() {
+  //   return {
+  //     communityPhotos: []
+  //   }
+  // },
 
-  componentDidMount() {
-    let ref = firebase.database().ref(`photos`).orderByChild('level');
-    this.bindAsArray(ref, 'communityPhotos');
+  // componentDidMount() {
+  //   let ref = firebase.database().ref(`photos`).orderByChild('level');
+  //   this.bindAsArray(ref, 'communityPhotos');
+  // },
+  componentDidMount(){
+    this.props.resetPhotoNotifications();
+
   },
 
   renderPhotos(photos) {
@@ -41,7 +46,7 @@ let Photos = React.createClass({
 
   render() {
     if (this.props.user) {
-      let unlockedPhotos = _.filter(this.state.communityPhotos, (photo)=>{
+      let unlockedPhotos = _.filter(this.props.communityPhotos, (photo)=>{
         return photo.level <= (this.props.user.level - 1); //Only show photos from levels they've ALREADY completed
       });
 
