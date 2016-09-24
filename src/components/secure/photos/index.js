@@ -32,7 +32,7 @@ let Photos = React.createClass({
     return (
       <div>
         <h1>Photos</h1>
-        <h2>Hi {this.props.user.name}, you've unlocked level {this.props.user.level}!</h2>
+        <h2>Hi {this.props.user.displayName}, you've unlocked level {this.props.user.level}!</h2>
         <h3>Now you can see all photos from level {this.props.user.level} and below.</h3>
         <p>Go back to <Link to="/challenges">Challenges</Link> to unlock more photos.</p>
         <ul>

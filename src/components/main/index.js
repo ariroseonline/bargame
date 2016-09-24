@@ -71,6 +71,9 @@ var Main = React.createClass({
 
 
       } else {
+
+        this.unbind("user");
+        this.unbind("challenges");
         console.log('Not logged in');
       }
     });
@@ -106,12 +109,16 @@ var Main = React.createClass({
     });
   },
 
+  logOut: function() {
+    firebase.auth().signOut();
+  },
+
   render: function () {
     var loginOrOut;
     var register;
     if (this.state.loggedIn) {
       loginOrOut = <li>
-        <Link to="/logout" className="navbar-brand">Logout</Link>
+        <a className="navbar-brand" href="#" onClick={this.logOut}>Logout</a>
       </li>;
       register = null
     } else {
@@ -150,15 +157,19 @@ var Main = React.createClass({
                     </li>
                     <li>
                         <Link to="/challenges" className="navbar-brand">
-                            Challenges (Level {this.state.user.level})
+                            Challenges {this.state.user ? `(Level ${this.state.user.level})` : null }
                         </Link>
                     </li>
                     <li>
                         <Link to="/photos" className="navbar-brand">
                             Photos
-                          ({this.state.newPhotoNotificationsCount} new)
-                          {<NotificationBadge count={this.state.newPhotoNotificationsCount}
-                                             effect={Effect.ROTATE_Y}/> }
+                          {this.state.user ?
+                          ` (${this.state.newPhotoNotificationsCount} new)` :
+                            null
+                          }
+
+                          {/*<NotificationBadge count={this.state.newPhotoNotificationsCount}
+                           effect={Effect.ROTATE_Y}/> */}
                         </Link>
                     </li>
                   {register}

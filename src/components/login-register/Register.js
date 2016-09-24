@@ -14,6 +14,31 @@ var Register = React.createClass({
     }
   },
 
+  handleGoogle: function() {
+    var provider = new firebase.auth.GoogleAuthProvider();
+
+    firebase.auth().signInWithPopup(provider).then((result)=> {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      var token = result.credential.accessToken;
+      // The signed-in user info.
+      var user = result.user;
+      //load up user challenges
+      this.initUserInDB(user)
+    }).catch((error)=> {
+      console.log('ERROr', error)
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+      this.setState({error: error.message})
+
+    });
+  },
+
   handleSubmit: function (e) {
     e.preventDefault();
     var email = this.refs.email.value;
@@ -29,6 +54,8 @@ var Register = React.createClass({
       .catch(()=> {
         this.setState({error: e.message})
       });
+
+
   },
 
   initUserInDB(user) {
@@ -38,8 +65,9 @@ var Register = React.createClass({
     firebase.database().ref('/challenges').once('value').then((snapshot)=> {
 
       let challenges = snapshot.val();
+      // let userName = this.refs.userName.value;
 
-     //convert stupid firebase to managemable collections with ids
+     //convert stupid firebase to manageable collections with ids
       var arr = [];
       for(var challengeId in challenges) {
         arr.push(challenges[challengeId]);
@@ -105,6 +133,8 @@ var Register = React.createClass({
           {errors}
           <button type="submit" className="btn btn-primary">Register</button>
         </form>
+        <span>OR</span>
+        <button onClick={this.handleGoogle}>GOOGLE LOGIN</button>
       </div>
     )
   }

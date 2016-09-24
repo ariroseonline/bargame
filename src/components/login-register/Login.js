@@ -9,6 +9,35 @@ var Login = React.createClass({
             error: false
         }
     },
+
+
+    handleGoogle: function() {
+        var provider = new firebase.auth.GoogleAuthProvider();
+
+        firebase.auth().signInWithPopup(provider).then((result)=> {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            var token = result.credential.accessToken;
+
+            var location = this.props.location
+            if (location.state && location.state.nextPathname) {
+                this.context.router.replace(location.state.nextPathname)
+            } else {
+                this.context.router.replace('/challenges')
+            }
+        }).catch((error)=> {
+            console.log('ERROr', error)
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+            // ...
+            this.setState({error: error.message})
+
+        });
+    },
     handleSubmit: function(e){
         e.preventDefault();
         var email = this.refs.email.value;
@@ -45,6 +74,8 @@ var Login = React.createClass({
                     {errors}
                     <button type="submit" className="btn btn-primary">Login</button>
                 </form>
+                <span>OR</span>
+                <button onClick={this.handleGoogle}>GOOGLE LOGIN</button>
             </div>
         );
     }
