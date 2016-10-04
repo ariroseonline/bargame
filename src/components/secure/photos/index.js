@@ -1,8 +1,17 @@
 import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router'
 import ReactFireMixin from 'reactfire'
-import style from './style.css'
+import style from './style.scss'
 import _ from 'underscore'
+var Masonry = require('react-masonry-component');
+
+var masonryOptions = {
+  transitionDuration: 0,
+  columnWidth: '.grid-sizer',
+  itemSelector: '.grid-item',
+  gutter: '.gutter-sizer',
+  percentPosition: true,
+};
 
 let Photos = React.createClass({
   mixins: [ReactFireMixin],
@@ -12,6 +21,11 @@ let Photos = React.createClass({
     user: PropTypes.object,
     resetPhotoNotifications: PropTypes.func
   },
+
+  handleImagesLoaded: function(imagesLoadedInstance) {
+    debugger
+  },
+
 
   // getInitialState() {
   //   return {
@@ -25,21 +39,29 @@ let Photos = React.createClass({
   // },
   componentDidMount(){
     this.props.resetPhotoNotifications();
-
   },
 
   renderPhotos(photos) {
+    var childElements = photos.map(function (photo, i) {
+      return <li className="grid-item" key={i}><img src={photo.photoURL} alt=""/></li>
+    });
+
     return (
       <div>
         <h1>Photos</h1>
         <h2>Hi {this.props.user.displayName}, you've unlocked level {this.props.user.level}!</h2>
         <h3>Now you can see all photos from level {this.props.user.level} and below.</h3>
         <p>Go back to <Link to="/challenges">Challenges</Link> to unlock more photos.</p>
-        <ul>
-          {photos.map(function (photo, i) {
-            return <li key={i}><img src={photo.photoURL} alt=""/></li>
-          }) }
-        </ul>
+          <Masonry
+            className={'photos-grid'} // default ''
+            elementType={'ul'} // default 'div'
+            options={masonryOptions} // default {}
+            updateOnEachImageLoad={true} // default false and works only if disableImagesLoaded is false
+          >
+            <div className="grid-sizer"></div>
+            <div className="gutter-sizer"></div>
+            {childElements}
+          </Masonry>
       </div>
     )
   },

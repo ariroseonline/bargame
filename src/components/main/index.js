@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react'
 import {Router, Link, browserHistory} from 'react-router'
 import ReactFireMixin from 'reactfire'
-import style from './style.css'
+import style from './style.scss'
 import NotificationBadge from 'react-notification-badge';
 import {Effect} from 'react-notification-badge';
 import settings from '../../settings'
@@ -142,7 +142,7 @@ var Main = React.createClass({
 
     return (
       <span>
-        <nav className="navbar navbar-default navbar-static-top">
+        <nav className="navbar navbar-default navbar-fixed-top">
             <div className="container">
                 <div className="navbar-header">
                     <Link to="/" className="navbar-brand">
