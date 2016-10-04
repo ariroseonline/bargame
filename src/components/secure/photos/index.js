@@ -5,11 +5,14 @@ import style from './style.scss'
 import _ from 'underscore'
 var Masonry = require('react-masonry-component');
 
+var yo = style['grid-item'];
+console.log(yo)
+
 var masonryOptions = {
   transitionDuration: 0,
-  columnWidth: '.grid-sizer',
-  itemSelector: '.grid-item',
-  gutter: '.gutter-sizer',
+  columnWidth: '.' + style['grid-sizer'],
+  itemSelector: '.' + style['grid-item'],
+  gutter: '.' + style['gutter-sizer'],
   percentPosition: true,
 };
 
@@ -23,7 +26,8 @@ let Photos = React.createClass({
   },
 
   handleImagesLoaded: function(imagesLoadedInstance) {
-    debugger
+    //handy
+    console.log('yo')
   },
 
 
@@ -43,7 +47,7 @@ let Photos = React.createClass({
 
   renderPhotos(photos) {
     var childElements = photos.map(function (photo, i) {
-      return <li className="grid-item" key={i}><img src={photo.photoURL} alt=""/></li>
+      return <li className={style['grid-item']} key={i}><img src={photo.photoURL} alt=""/></li>
     });
 
     return (
@@ -58,8 +62,8 @@ let Photos = React.createClass({
             options={masonryOptions} // default {}
             updateOnEachImageLoad={true} // default false and works only if disableImagesLoaded is false
           >
-            <div className="grid-sizer"></div>
-            <div className="gutter-sizer"></div>
+            <div className={style['grid-sizer']}></div>
+            <div className={style['gutter-sizer']}></div>
             {childElements}
           </Masonry>
       </div>

@@ -58,7 +58,7 @@ let config = {
 
       },
       { test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000' },
-      { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' },
+      { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports' },
 
       {
         test: /masonry|imagesloaded|fizzy\-ui\-utils|desandro\-|outlayer|get\-size|doc\-ready|eventie|eventemitter/,
@@ -68,12 +68,12 @@ let config = {
     ]
   },
   plugins: [
-    new WebpackNotifierPlugin(),
-    new webpack.ProvidePlugin({
-      jQuery: 'jquery',
-      $: 'jquery',
-      jquery: 'jquery'
-    })
+    new WebpackNotifierPlugin()
+    // new webpack.ProvidePlugin({
+    //   jQuery: 'jquery',
+    //   $: 'jquery',
+    //   jquery: 'jquery'
+    // })
   ]
 }
 
