@@ -1,1 +1,21 @@
 body { padding-top: 70px; }
+
+.main-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px solid black;
+  background: white;
+  padding-top: 20px;
+
+}
+
+.logo a {
+  padding: 10px 15px;
+}
+
+.level-badge span{
+  padding: 10px 15px;
+  display: block;
+}

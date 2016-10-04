@@ -118,15 +118,15 @@ var Main = React.createClass({
     var register;
     if (this.state.loggedIn) {
       loginOrOut = <li>
-        <a className="navbar-brand" href="#" onClick={this.logOut}>Logout</a>
+        <a href="#" onClick={this.logOut}>Logout</a>
       </li>;
       register = null
     } else {
       loginOrOut = <li>
-        <Link to="/login" className="navbar-brand">Login</Link>
+        <Link to="/login">Login</Link>
       </li>;
       register = <li>
-        <Link to="/register" className="navbar-brand">
+        <Link to="/register">
           Register
         </Link>
       </li>;
@@ -142,36 +142,40 @@ var Main = React.createClass({
 
     return (
       <span>
-        <nav className="navbar navbar-default navbar-fixed-top">
+        <nav className="main-nav">
             <div className="container">
-                <div className="navbar-header">
-                    <Link to="/" className="navbar-brand">
+                <div className="logo">
+                    <Link to="/" className="pull-left">
                         Bargame
                     </Link>
                 </div>
-                <ul className="nav navbar-nav pull-right">
+                <ul className="nav nav-pills pull-right">
                     <li>
-                        <Link to="/" className="navbar-brand">
+                        <Link to="/">
                             Home
                         </Link>
                     </li>
                     <li>
-                        <Link to="/challenges" className="navbar-brand">
-                            Challenges {this.state.user ? `(Level ${this.state.user.level})` : null }
+                        <Link to="/challenges">
+                            Challenges
                         </Link>
                     </li>
                     <li>
-                        <Link to="/photos" className="navbar-brand">
-                            Photos
-                          {this.state.user ?
-                          ` (${this.state.newPhotoNotificationsCount} new)` :
-                            null
-                          }
+                        <Link to="/photos">
+                            Photos {this.state.user && this.state.newPhotoNotificationsCount.length ?
+                          <span className="badge"> ` (${this.state.newPhotoNotificationsCount} new)`</span> :
+                          null
+                        }
+
 
                           {/*<NotificationBadge count={this.state.newPhotoNotificationsCount}
                            effect={Effect.ROTATE_Y}/> */}
                         </Link>
                     </li>
+
+                  <li className="level-badge">
+                    <span> {this.state.user ? `Level ${this.state.user.level}` : null }</span>
+                  </li>
                   {register}
                   {loginOrOut}
                 </ul>
