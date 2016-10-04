@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'underscore';
 import settings from '../../settings';
+import style from './style.scss'
 
 var Register = React.createClass({
 

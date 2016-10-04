@@ -10,6 +10,9 @@ import Login from './components/login-register/login'
 import Logout from './components/login-register/logout'
 import Register from './components/login-register/register'
 
+import 'jquery';
+import 'bootstrap-loader';
+
 // Initialize Firebase
 var config = {
   apiKey: "AIzaSyCF52_JHNP0WfyMKH7GLjLXgHJ5eM_XSVs",
