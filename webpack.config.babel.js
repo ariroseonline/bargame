@@ -50,7 +50,13 @@ let config = {
         loader: 'url?limit=100000'
       },
 
-      { test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass'] },
+      { test: /\.scss$/,
+        loaders: ['style?sourceMap',
+          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
+          'resolve-url',
+          'sass?sourceMap']
+
+      },
       { test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000' },
       { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' },
 
