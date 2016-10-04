@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
-import style from './style.css'
+import style from './style'
 
 let Login = React.createClass({
   propTypes: {
