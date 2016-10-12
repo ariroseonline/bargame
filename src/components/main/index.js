@@ -141,7 +141,7 @@ var Main = React.createClass({
     });
 
     return (
-      <span>
+      <div>
         <nav className="main-nav">
             <div className="container">
                 <div className="logo">
@@ -173,20 +173,18 @@ var Main = React.createClass({
                         </Link>
                     </li>
 
-                  <li className="level-badge">
-                    <span> {this.state.user ? `Level ${this.state.user.level}` : null }</span>
-                  </li>
+                  {/*<li className="level-badge">*/}
+                    {/*<span> {this.state.user ? `Level ${this.state.user.level}` : null }</span>*/}
+                  {/*</li>*/}
                   {register}
                   {loginOrOut}
                 </ul>
             </div>
         </nav>
         <div className="container">
-            <div className="row">
               {childrenWithUser}
-            </div>
         </div>
-    </span>
+    </div>
     )
   }
 });

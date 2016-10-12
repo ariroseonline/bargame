@@ -5,8 +5,6 @@ import style from './style.scss'
 import _ from 'underscore'
 var Masonry = require('react-masonry-component');
 
-var yo = style['grid-item'];
-console.log(yo)
 
 var masonryOptions = {
   transitionDuration: 0,
@@ -27,20 +25,9 @@ let Photos = React.createClass({
 
   handleImagesLoaded: function(imagesLoadedInstance) {
     //handy
-    console.log('yo')
+    console.log('images loaded')
   },
 
-
-  // getInitialState() {
-  //   return {
-  //     communityPhotos: []
-  //   }
-  // },
-
-  // componentDidMount() {
-  //   let ref = firebase.database().ref(`photos`).orderByChild('level');
-  //   this.bindAsArray(ref, 'communityPhotos');
-  // },
   componentDidMount(){
     this.props.resetPhotoNotifications();
   },
@@ -52,10 +39,11 @@ let Photos = React.createClass({
 
     return (
       <div>
-        <h1>Photos</h1>
-        <h2>Hi {this.props.user.displayName}, you've unlocked level {this.props.user.level}!</h2>
+        <div className="page-header">
+        <h1>Hey Champ, you've unlocked level {this.props.user.level}!</h1>
         <h3>Now you can see all photos from level {this.props.user.level} and below.</h3>
         <p>Go back to <Link to="/challenges">Challenges</Link> to unlock more photos.</p>
+        </div>
           <Masonry
             className={'photos-grid'} // default ''
             elementType={'ul'} // default 'div'

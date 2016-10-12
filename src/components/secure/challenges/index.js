@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router'
 import style from './style.scss'
 import ReactFireMixin from 'reactfire'
+import _ from 'underscore'
 
 let Challenges = React.createClass({
   mixins: [ReactFireMixin],
@@ -67,7 +68,7 @@ let Challenges = React.createClass({
         updates[`/users/${uid}/challenges/${challengeKey}/completed`] = true;
 
 
-        firebase.database().ref().update(updates).then(()=>{
+        firebase.database().ref().update(updates).then(()=> {
           //check to see if user has surpassed threshold to get to next level
           this.props.updateUserLevel();
         });
@@ -83,20 +84,33 @@ let Challenges = React.createClass({
   },
 
   renderChallenges() {
+    //find level challenges
+    let levelChallenges = _.filter(this.props.challenges, (challenge)=> {
+      return challenge.level == this.props.user.level; //Only show challenges from current level
+    });
+
     return (
-      <ul>
-        {this.props.challenges.map((challenge, i)=> {
+      <ul className="row">
+        {levelChallenges.map((challenge, i)=> {
           if (challenge.level <= this.props.user.level) {
-            {/*console.log('CHALLENGE', challenge);*/
-            }
+            let styleClass = challenge.completed ? style.completed : "";
+            styleClass = styleClass + " col-sm-4";
+
             return (
-              <li className={challenge.completed ? style.completed : null} key={i}>
-                <h1>{challenge.name}</h1>
-                <h2>{challenge.desc}</h2>
-                <input type="file" accept="image/*" capture="camera" id={`challenge-upload-${challenge['.key']}`}
-                       onChange={()=> {
-                         this.handleChallengeInput(challenge['.key'], challenge.name)
-                       }}/>
+              <li className={styleClass} key={i}>
+                <div className="panel panel-default">
+                  <div className="panel-heading">
+                    <h3 className="panel-title">{challenge.name}</h3>
+                  </div>
+                  <div className="panel-body">
+                    {challenge.desc}
+
+                    <input type="file" accept="image/*" capture="camera" id={`challenge-upload-${challenge['.key']}`}
+                           onChange={()=> {
+                             this.handleChallengeInput(challenge['.key'], challenge.name)
+                           }}/>
+                  </div>
+                </div>
               </li>
             )
           }
@@ -110,8 +124,8 @@ let Challenges = React.createClass({
   render() {
     if (this.props.user) {
       return (
-        <div>
-          <h1>Challenges</h1>
+        <div className="page-header">
+          <h1>Challenges <small>Level {this.props.user.level}</small></h1>
           { this.renderChallenges() }
         </div>
       )
