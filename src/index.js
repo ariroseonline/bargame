@@ -52,10 +52,13 @@ function requireAuth(nextState, replace, callback) {
   });
 }
 
+function closeSideMenu() {
+  $("#js-bootstrap-offcanvas").trigger("offcanvas.close");
+}
 
 render((
   <Router history={browserHistory}>
-    <Route component={Main} path="/">
+    <Route component={Main} path="/" onChange={closeSideMenu}>
       <IndexRoute component={Home} />
       <Route component={Challenges} path="/challenges" onEnter={requireAuth} />
       <Route component={Challenge}  path="/challenges/:challenge_id" onEnter={requireAuth} />
