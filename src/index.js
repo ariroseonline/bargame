@@ -9,8 +9,9 @@ import Photos from './components/secure/photos'
 import Login from './components/login-register/login'
 import Logout from './components/login-register/logout'
 import Register from './components/login-register/register'
-
 import 'bootstrap-loader';
+require('offcanvas-bootstrap/dist/css/bootstrap.offcanvas.min.css');
+
 
 // Initialize Firebase
 var config = {

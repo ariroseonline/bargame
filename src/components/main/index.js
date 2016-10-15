@@ -2,8 +2,6 @@ import React, {Component, PropTypes} from 'react'
 import {Router, Link, browserHistory} from 'react-router'
 import ReactFireMixin from 'reactfire'
 import style from './style.scss'
-import NotificationBadge from 'react-notification-badge';
-import {Effect} from 'react-notification-badge';
 import settings from '../../settings'
 import _ from 'underscore'
 
@@ -80,6 +78,11 @@ var Main = React.createClass({
 
   },
 
+  componentDidMount() {
+    require('offcanvas-bootstrap/dist/js/bootstrap.offcanvas.js');
+
+  },
+
   updateUserLevel() {
     let levelChallenges = _.filter(this.state.challenges, (challenge)=> {
       return challenge.level === this.state.user.level;
@@ -113,7 +116,7 @@ var Main = React.createClass({
     firebase.auth().signOut();
   },
 
-  render: function () {
+  renderSideMenu() {
     var loginOrOut;
     var register;
     if (this.state.loggedIn) {
@@ -131,6 +134,39 @@ var Main = React.createClass({
         </Link>
       </li>;
     }
+    return (
+      <nav className="navbar navbar-default navbar-offcanvas navbar-offcanvas-touch navbar-offcanvas-fade" role="navigation" id="js-bootstrap-offcanvas">
+        <div className="container-fluid">
+          <div className="navbar-header">
+            <a className="navbar-brand" href="#">Brand</a>
+          </div>
+          <div>
+            <ul className="nav navbar-nav">
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/challenges">Challenges</Link></li>
+              <li><Link to="/photos">
+                Photos {this.state.user && this.state.newPhotoNotificationsCount ?
+                <span className="badge"> {`${this.state.newPhotoNotificationsCount} new`}</span> :
+                null
+              }
+              </Link>
+              </li>
+            </ul>
+
+            <ul className="nav navbar-nav navbar-right">
+              {/*<li className="level-badge">*/}
+              {/*<span> {this.state.user ? `Level ${this.state.user.level}` : null }</span>*/}
+              {/*</li>*/}
+              {register}
+              {loginOrOut}
+            </ul>
+          </div>
+        </div>
+      </nav>
+    )
+  },
+
+  render: function () {
 
     let childrenWithUser = React.cloneElement(this.props.children, {
       user: this.state.user,
@@ -144,41 +180,19 @@ var Main = React.createClass({
       <div>
         <nav className="main-nav">
             <div className="container">
-                <div className="logo">
-                    <Link to="/" className="pull-left">
-                        Bargame
-                    </Link>
-                </div>
-                <ul className="nav nav-pills pull-right">
-                    <li>
-                        <Link to="/">
-                            Home
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/challenges">
-                            Challenges
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/photos">
-                            Photos {this.state.user && this.state.newPhotoNotificationsCount.length ?
-                          <span className="badge"> ` (${this.state.newPhotoNotificationsCount} new)`</span> :
-                          null
-                        }
+
+              <button type="button" className="navbar-toggle offcanvas-toggle" data-toggle="offcanvas" data-target="#js-bootstrap-offcanvas">
+                <span className="sr-only">Toggle navigation</span>
+                <span>
+                  <span className="icon-bar"></span>
+                  <span className="icon-bar"></span>
+                  <span className="icon-bar"></span>
+                </span>
+              </button>
+
+              {this.renderSideMenu()}
 
 
-                          {/*<NotificationBadge count={this.state.newPhotoNotificationsCount}
-                           effect={Effect.ROTATE_Y}/> */}
-                        </Link>
-                    </li>
-
-                  {/*<li className="level-badge">*/}
-                    {/*<span> {this.state.user ? `Level ${this.state.user.level}` : null }</span>*/}
-                  {/*</li>*/}
-                  {register}
-                  {loginOrOut}
-                </ul>
             </div>
         </nav>
         <div className="container">
