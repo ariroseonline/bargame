@@ -19,17 +19,12 @@ let Photos = React.createClass({
 
   propTypes: {
     children: PropTypes.node,
-    user: PropTypes.object,
-    resetPhotoNotifications: PropTypes.func
+    user: PropTypes.object
   },
 
   handleImagesLoaded: function(imagesLoadedInstance) {
     //handy
     console.log('images loaded')
-  },
-
-  componentDidMount(){
-    this.props.resetPhotoNotifications();
   },
 
   renderPhotos(photos) {

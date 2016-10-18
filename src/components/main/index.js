@@ -13,9 +13,7 @@ var Main = React.createClass({
       loggedIn: (null !== firebase.auth().currentUser),
       user: null,
       communityPhotos: [],
-      challenges: [],
-      newPhotoNotificationsCount: 0,
-      seenPhotosCount: 0
+      challenges: []
     }
   },
   componentWillMount: function () {
@@ -57,12 +55,8 @@ var Main = React.createClass({
         //TODO may need child removed as well
         photosRef.on("child_added", function(dataSnapshot) {
           communityPhotos.push(dataSnapshot.val());
-          let newPhotoNotificationsCount = communityPhotos.length - this.state.seenPhotosCount;
-
           this.setState({
-            communityPhotos: communityPhotos,
-            newPhotoNotificationsCount: newPhotoNotificationsCount
-
+            communityPhotos: communityPhotos
           });
         }.bind(this));
 
@@ -108,13 +102,6 @@ var Main = React.createClass({
     })
   },
 
-  resetPhotoNotifications() {
-    this.setState({
-      seenPhotosCount: this.state.newPhotoNotificationsCount + this.state.seenPhotosCount,
-      newPhotoNotificationsCount: 0
-    });
-  },
-
   logOut: function() {
     firebase.auth().signOut();
   },
@@ -147,13 +134,7 @@ var Main = React.createClass({
             <ul className="nav navbar-nav">
               <li><Link to="/">Home</Link></li>
               <li><Link to="/challenges">Challenges</Link></li>
-              <li><Link to="/photos">
-                Photos {this.state.user && this.state.newPhotoNotificationsCount ?
-                <span className="badge"> {`${this.state.newPhotoNotificationsCount} new`}</span> :
-                null
-              }
-              </Link>
-              </li>
+              <li><Link to="/photos">Photos</Link></li>
             </ul>
 
             <ul className="nav navbar-nav navbar-right">
@@ -174,7 +155,6 @@ var Main = React.createClass({
     let childrenWithUser = React.cloneElement(this.props.children, {
       user: this.state.user,
       communityPhotos: this.state.communityPhotos,
-      resetPhotoNotifications: this.resetPhotoNotifications,
       challenges: this.state.challenges,
       updateUserLevel: this.updateUserLevel
     });
