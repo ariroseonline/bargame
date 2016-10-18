@@ -87,7 +87,7 @@ if (process.env.NODE_ENV === 'production') {
 
 config.plugins = [
   new Dotenv({
-    path: './.env' // if not simply .env
+    path: './.env'
   })
 ]
 

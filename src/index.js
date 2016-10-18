@@ -30,7 +30,6 @@ firebase.initializeApp(config);
 window.cl = cloudinary.Cloudinary.new( {cloud_name: "bargame"});
 
 
-
 function requireAuth(nextState, replace, callback) {
 
   firebase.auth().onAuthStateChanged((user) => {
