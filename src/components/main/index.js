@@ -171,7 +171,7 @@ var Main = React.createClass({
                 </span>
               </button>
 
-              <a className="navbar-brand" href="#">Brand</a>
+              <a className="navbar-brand" href="#">Bargame</a>
             </div>
 
 
