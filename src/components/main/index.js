@@ -81,6 +81,9 @@ var Main = React.createClass({
   componentDidMount() {
     require('offcanvas-bootstrap/dist/js/bootstrap.offcanvas.js');
 
+
+    console.log(process.env)
+
   },
 
   updateUserLevel() {
@@ -135,11 +138,11 @@ var Main = React.createClass({
       </li>;
     }
     return (
-      <nav className="navbar navbar-default navbar-offcanvas navbar-offcanvas-touch navbar-offcanvas-fade" role="navigation" id="js-bootstrap-offcanvas">
+      <nav className="navbar navbar-default navbar-offcanvas navbar-offcanvas-fade" role="navigation" id="js-bootstrap-offcanvas">
         <div className="container-fluid">
-          <div className="navbar-header">
-            <a className="navbar-brand" href="#">Brand</a>
-          </div>
+          {/*<div className="navbar-header">*/}
+            {/*<a className="navbar-brand" href="#">Brand</a>*/}
+          {/*</div>*/}
           <div>
             <ul className="nav navbar-nav">
               <li><Link to="/">Home</Link></li>
@@ -176,19 +179,25 @@ var Main = React.createClass({
       updateUserLevel: this.updateUserLevel
     });
 
+    let hamburgerButtonClasses = style.hamburger + " navbar-toggle offcanvas-toggle" ;
+
     return (
       <div>
-        <nav className="main-nav">
+        <nav className="main-nav navbar navbar-default navbar-fixed-top">
             <div className="container">
 
-              <button type="button" className="navbar-toggle offcanvas-toggle" data-toggle="offcanvas" data-target="#js-bootstrap-offcanvas">
-                <span className="sr-only">Toggle navigation</span>
-                <span>
+
+
+              <h1>Bargame
+                <button type="button" className={hamburgerButtonClasses} data-toggle="offcanvas" data-target="#js-bootstrap-offcanvas">
+                  <span className="sr-only">Toggle navigation</span>
+                  <span>
                   <span className="icon-bar"></span>
                   <span className="icon-bar"></span>
                   <span className="icon-bar"></span>
                 </span>
-              </button>
+                </button>
+              </h1>
 
               {this.renderSideMenu()}
 

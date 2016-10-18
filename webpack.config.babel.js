@@ -1,6 +1,7 @@
 import path from 'path'
 import webpack from 'webpack'
 import WebpackNotifierPlugin from 'webpack-notifier'
+const Dotenv = require('dotenv-webpack');
 
 
 let config = {
@@ -77,16 +78,20 @@ let config = {
   ]
 }
 
+config.devtool = 'source-map'
+
 if (process.env.NODE_ENV === 'production') {
-  config.devtool = 'source-map'
   config.devServer = {}
-  config.plugins = [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    })
-  ]
 }
+
+
+config.plugins = [
+  new Dotenv({
+    path: './.env' // if not simply .env
+  })
+]
+
+
+
 
 export default config

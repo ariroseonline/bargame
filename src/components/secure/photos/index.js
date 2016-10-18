@@ -33,8 +33,11 @@ let Photos = React.createClass({
   },
 
   renderPhotos(photos) {
-    var childElements = photos.map(function (photo, i) {
-      return <li className={style['grid-item']} key={i}><img src={photo.photoURL} alt=""/></li>
+    let childElements = photos.map(function (photo, i) {
+      var cloudinary_url = cl.url(photo.photoURL, {type: "fetch",  width: 150,  height: 200, crop: 'thumb', gravity: "auto"});
+      // Do something with the URL...
+      console.log(cloudinary_url);
+      return <li className={style['grid-item']} key={i}><a href={photo.photoURL}><img src={cloudinary_url} /></a></li>
     });
 
     return (

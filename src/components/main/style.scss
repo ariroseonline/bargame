@@ -1,6 +1,6 @@
 body { padding-top: 70px; }
 
-.main-nav {
+.mainNav {
   position: fixed;
   top: 0;
   left: 0;
@@ -18,4 +18,8 @@ body { padding-top: 70px; }
 .level-badge span{
   padding: 10px 15px;
   display: block;
+}
+
+.hamburger {
+  float: left !important;
 }

@@ -11,16 +11,24 @@ import Logout from './components/login-register/logout'
 import Register from './components/login-register/register'
 import 'bootstrap-loader';
 require('offcanvas-bootstrap/dist/css/bootstrap.offcanvas.min.css');
+var cloudinary = require('cloudinary-core');
+
+
+
 
 
 // Initialize Firebase
 var config = {
-  apiKey: "AIzaSyCF52_JHNP0WfyMKH7GLjLXgHJ5eM_XSVs",
-  authDomain: "bargame-37938.firebaseapp.com",
-  databaseURL: "https://bargame-37938.firebaseio.com",
-  storageBucket: "bargame-37938.appspot.com",
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.FIREBASE_DATABASE_URL,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET
 };
 firebase.initializeApp(config);
+
+
+window.cl = cloudinary.Cloudinary.new( {cloud_name: "bargame"});
+
 
 
 function requireAuth(nextState, replace, callback) {
