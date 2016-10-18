@@ -142,7 +142,7 @@ var Main = React.createClass({
 
       </ul>
 
-      < / div >
+      </div >
     )
   },
 
