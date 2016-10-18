@@ -53,13 +53,12 @@ var Main = React.createClass({
         // this.bindAsArray(photosRef, 'communityPhotos');
         let communityPhotos = this.state.communityPhotos;
         //TODO may need child removed as well
-        photosRef.on("child_added", function(dataSnapshot) {
+        photosRef.on("child_added", function (dataSnapshot) {
           communityPhotos.push(dataSnapshot.val());
           this.setState({
             communityPhotos: communityPhotos
           });
         }.bind(this));
-
 
 
       } else {
@@ -102,7 +101,7 @@ var Main = React.createClass({
     })
   },
 
-  logOut: function() {
+  logOut: function () {
     firebase.auth().signOut();
   },
 
@@ -125,28 +124,25 @@ var Main = React.createClass({
       </li>;
     }
     return (
-      <nav className="navbar navbar-default navbar-offcanvas navbar-offcanvas-fade" role="navigation" id="js-bootstrap-offcanvas">
-        <div className="container-fluid">
-          {/*<div className="navbar-header">*/}
-            {/*<a className="navbar-brand" href="#">Brand</a>*/}
-          {/*</div>*/}
-          <div>
-            <ul className="nav navbar-nav">
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/challenges">Challenges</Link></li>
-              <li><Link to="/photos">Photos</Link></li>
-            </ul>
 
-            <ul className="nav navbar-nav navbar-right">
-              {/*<li className="level-badge">*/}
-              {/*<span> {this.state.user ? `Level ${this.state.user.level}` : null }</span>*/}
-              {/*</li>*/}
-              {register}
-              {loginOrOut}
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <div>
+        <ul className="nav navbar-nav navbar-offcanvas navbar-offcanvas-fade pull-right" role="navigation"
+            id="js-bootstrap-offcanvas">
+          <li><Link to="/">Instructions</Link></li>
+          <li><Link to="/challenges">Challenges</Link></li>
+          <li><Link to="/photos">Photos</Link></li>
+
+          {/*<li className="level-badge">*/}
+          {/*<span> {this.state.user ? `Level ${this.state.user.level}` : null }</span>*/}
+          {/*</li>*/}
+          {register}
+          {loginOrOut}
+
+
+
+      </ul>
+
+      < / div >
     )
   },
 
@@ -159,35 +155,39 @@ var Main = React.createClass({
       updateUserLevel: this.updateUserLevel
     });
 
-    let hamburgerButtonClasses = style.hamburger + " navbar-toggle offcanvas-toggle" ;
+    let hamburgerButtonClasses = style.hamburger + " navbar-toggle offcanvas-toggle";
 
     return (
       <div>
+
         <nav className="main-nav navbar navbar-default navbar-fixed-top">
-            <div className="container">
 
+          <div className="container">
 
-
-              <h1>Bargame
-                <button type="button" className={hamburgerButtonClasses} data-toggle="offcanvas" data-target="#js-bootstrap-offcanvas">
-                  <span className="sr-only">Toggle navigation</span>
-                  <span>
+            <div className="navbar-header">
+              <button type="button" className={hamburgerButtonClasses} data-toggle="offcanvas"
+                      data-target="#js-bootstrap-offcanvas">
+                <span className="sr-only">Toggle navigation</span>
+                <span>
                   <span className="icon-bar"></span>
                   <span className="icon-bar"></span>
                   <span className="icon-bar"></span>
                 </span>
-                </button>
-              </h1>
+              </button>
 
-              {this.renderSideMenu()}
-
-
+              <a className="navbar-brand" href="#">Brand</a>
             </div>
+
+
+            {this.renderSideMenu()}
+
+
+          </div>
         </nav>
         <div className="container">
-              {childrenWithUser}
+          {childrenWithUser}
         </div>
-    </div>
+      </div>
     )
   }
 });
