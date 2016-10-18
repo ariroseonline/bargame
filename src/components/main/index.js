@@ -73,10 +73,6 @@ var Main = React.createClass({
 
   componentDidMount() {
     require('offcanvas-bootstrap/dist/js/bootstrap.offcanvas.js');
-
-
-    console.log(process.env)
-
   },
 
   updateUserLevel() {
